@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../screen/screen.dart';
 import '../utils.dart';
 
 class BottomNavigationBarWidget {
@@ -8,9 +9,8 @@ class BottomNavigationBarWidget {
   Widget bottomNavigationBarWidget({
     required BuildContext context,
     required bool isHomeFocus,
-    required bool isSearchFocus,
-    required bool isTrackOrderFocus,
-    required bool isCartFocus,
+    required bool isMenuFocus,
+    required bool isOrderFocus,
     required bool isProfileFocus,
   }) {
     if(MediaQuery.of(context).size.height > 1133) {
@@ -37,7 +37,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                   // Get.off(()=>HomeScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                   Get.off(()=>HomeScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +93,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                    //Get.off(()=>SearchScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                    Get.off(()=>MenuScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +110,7 @@ class BottomNavigationBarWidget {
                         child: FittedBox(
                           fit: BoxFit.cover,
                           child: Image.asset(
-                            isSearchFocus == true ? ImagePathUtils.searchIconFocusImagePath : ImagePathUtils.searchIconUnfocusImagePath,
+                            isMenuFocus == true ? ImagePathUtils.menuIconFocusImagePath : ImagePathUtils.menuIconUnfocusImagePath,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
                           ),
@@ -121,13 +121,13 @@ class BottomNavigationBarWidget {
                       SpacerWidget.spacerWidget(spaceHeight: 2.ht(context)),
 
                       Text(
-                        "Search".tr,
+                        "Menu".tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.tajawal(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 12.spt(context),
-                          color: isSearchFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
+                          color: isMenuFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
                         ),
                       ),
 
@@ -149,7 +149,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                    //Get.off(()=>OrderTrackScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                    Get.off(()=>OrderScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +166,7 @@ class BottomNavigationBarWidget {
                         child: FittedBox(
                           fit: BoxFit.cover,
                           child: Image.asset(
-                            isTrackOrderFocus == true ? ImagePathUtils.orderTrackIconFocusImagePath : ImagePathUtils.orderTrackIconUnfocusImagePath,
+                            isOrderFocus == true ? ImagePathUtils.orderTrackIconFocusImagePath : ImagePathUtils.orderTrackIconUnfocusImagePath,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
                           ),
@@ -177,13 +177,13 @@ class BottomNavigationBarWidget {
                       SpacerWidget.spacerWidget(spaceHeight: 2.ht(context)),
 
                       Text(
-                        "Track Order".tr,
+                        "Order".tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.tajawal(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 12.spt(context),
-                          color: isTrackOrderFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
+                          color: isOrderFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
                         ),
                       ),
 
@@ -196,61 +196,6 @@ class BottomNavigationBarWidget {
 
               SpacerWidget.spacerWidget(spaceWidth: 14.wt(context)),
 
-              Container(
-                height: 60.ht(context),
-                width: 72.wt(context),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                child: TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () async {
-                    //Get.off(()=>CartScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-
-
-                      Container(
-                        height: 24.ht(context),
-                        width: 24.wt(context),
-                        decoration: BoxDecoration(
-                            color: Colors.transparent
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.cover,
-                          child: Image.asset(
-                            isCartFocus == true ? ImagePathUtils.cartIconFocusImagePath : ImagePathUtils.cartIconUnfocusImagePath,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
-                          ),
-                        ),
-                      ),
-
-
-                      SpacerWidget.spacerWidget(spaceHeight: 2.ht(context)),
-
-                      Text(
-                        "Cart".tr,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.tajawal(
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.spt(context),
-                          color: isCartFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
-                        ),
-                      ),
-
-
-
-                    ],
-                  ),
-                ),
-              ),
-
-              SpacerWidget.spacerWidget(spaceWidth: 14.wt(context)),
 
               Container(
                 height: 60.ht(context),
@@ -261,7 +206,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                    //Get.off(()=>ProfileScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                    Get.off(()=>ProfileScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -323,7 +268,7 @@ class BottomNavigationBarWidget {
           ),
           padding: EdgeInsets.symmetric(horizontal: 15.hpmm(context)),
           child:  Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
@@ -336,7 +281,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                   // Get.off(()=>HomeScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                   Get.off(()=>HomeScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -391,7 +336,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                   // Get.off(()=>SearchScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                   Get.off(()=>MenuScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -408,7 +353,7 @@ class BottomNavigationBarWidget {
                         child: FittedBox(
                           fit: BoxFit.cover,
                           child: Image.asset(
-                            isSearchFocus == true ? ImagePathUtils.searchIconFocusImagePath : ImagePathUtils.searchIconUnfocusImagePath,
+                            isMenuFocus == true ? ImagePathUtils.menuIconFocusImagePath : ImagePathUtils.menuIconUnfocusImagePath,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
                           ),
@@ -419,13 +364,13 @@ class BottomNavigationBarWidget {
                       SpacerWidget.spacerWidget(spaceHeight: 2.hm(context)),
 
                       Text(
-                        "Search".tr,
+                        "Menu".tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.tajawal(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 12.spm(context),
-                          color: isSearchFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
+                          color: isMenuFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
                         ),
                       ),
 
@@ -446,7 +391,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                  //  Get.off(()=>OrderTrackScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                    Get.off(()=>OrderScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -463,7 +408,7 @@ class BottomNavigationBarWidget {
                         child: FittedBox(
                           fit: BoxFit.cover,
                           child: Image.asset(
-                            isTrackOrderFocus == true ? ImagePathUtils.orderTrackIconFocusImagePath : ImagePathUtils.orderTrackIconUnfocusImagePath,
+                            isOrderFocus == true ? ImagePathUtils.orderTrackIconFocusImagePath : ImagePathUtils.orderTrackIconUnfocusImagePath,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
                           ),
@@ -474,13 +419,13 @@ class BottomNavigationBarWidget {
                       SpacerWidget.spacerWidget(spaceHeight: 2.hm(context)),
 
                       Text(
-                        "Track Order".tr,
+                        "Order".tr,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.tajawal(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 12.spm(context),
-                          color: isTrackOrderFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
+                          color: isOrderFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
                         ),
                       ),
 
@@ -501,62 +446,7 @@ class BottomNavigationBarWidget {
                 child: TextButton(
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () async {
-                   // Get.off(()=>CartScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-
-
-                      Container(
-                        height: 24.hm(context),
-                        width: 24.wm(context),
-                        decoration: BoxDecoration(
-                            color: Colors.transparent
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.cover,
-                          child: Image.asset(
-                            isCartFocus == true ? ImagePathUtils.cartIconFocusImagePath : ImagePathUtils.cartIconUnfocusImagePath,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
-                          ),
-                        ),
-                      ),
-
-
-                      SpacerWidget.spacerWidget(spaceHeight: 2.hm(context)),
-
-                      Text(
-                        "Cart".tr,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.tajawal(
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.spm(context),
-                          color: isCartFocus == true ? ColorUtils.blue210 : ColorUtils.black33,
-                        ),
-                      ),
-
-
-
-                    ],
-                  ),
-                ),
-              ),
-
-
-              Container(
-                height: 60.hm(context),
-                width: 72.wm(context),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                child: TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () async {
-                    //Get.off(()=>ProfileScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                    Get.off(()=>ProfileScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

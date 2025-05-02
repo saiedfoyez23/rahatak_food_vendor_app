@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../screen/screen.dart';
 import '../utils/utils.dart';
 
 class AuthenticationSplashScreenWidget extends GetxController {
@@ -195,7 +196,7 @@ class AuthenticationSplashScreenWidget extends GetxController {
                       child: TextButton(
                         style: TextButton.styleFrom(padding: EdgeInsets.zero),
                         onPressed: () async {
-                          //Get.off(()=>LoginScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                          Get.off(()=>LoginScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                         },
                         child: Center(
                           child: Text(
@@ -230,7 +231,7 @@ class AuthenticationSplashScreenWidget extends GetxController {
                       child: TextButton(
                         style: TextButton.styleFrom(padding: EdgeInsets.zero),
                         onPressed: () async {
-                          //Get.off(()=>RegistrationScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                          Get.off(()=>RegistrationScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                         },
                         child: Center(
                           child: Text(

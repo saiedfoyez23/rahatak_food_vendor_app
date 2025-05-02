@@ -17,8 +17,8 @@ class ImagePathUtils {
   static String orderTrackIconUnfocusImagePath = "images/order_track_icon_unfocus.png";
   static String profileFocusIconImagePath = "images/profile_focus_icon.png";
   static String profileUnfocusIconImagePath = "images/profile_unfocus_icon.png";
-  static String searchIconFocusImagePath = "images/search_icon_focus.png";
-  static String searchIconUnfocusImagePath = "images/search_icon_unfocus.png";
+  static String menuIconFocusImagePath = "images/menu_icon_focus.png";
+  static String menuIconUnfocusImagePath = "images/menu_icon_unfocus.png";
   static String cartIconFocusImagePath = "images/cart_icon_focus.png";
   static String cartIconUnfocusImagePath = "images/cart_icon_unfocus.png";
   static String searchIconImagePath = "images/search_icon.png";
