@@ -55,6 +55,8 @@ class ImagePathUtils {
   static String passwordResetIconImagePath = "images/password_reset_icon.png";
   static String arrowForwordIconImagePath = "images/arrow_forword_icon.png";
   static String uploadIconImagePath = "images/upload_icon.png";
+  static String deleteIconImagePath = "images/delete_icon.png";
+  static String deleteCircleIconImagePath = "images/delete_circle_icon.png";
 
 
   static String editImageIconImagePath = "images/profile_screen_image/edit_image_icon.png";
@@ -106,6 +108,7 @@ class ImagePathUtils {
   static String productImage_8 = "images/extra_image/product_image_8.png";
 
   static String restaurantImage = "images/extra_image/resturant_image.png";
+  static String restaurantOneImage = "images/extra_image/resturant_image_1.png";
 
 
 

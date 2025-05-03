@@ -36,6 +36,7 @@ dependencies:
   geocoding:
   google_maps_flutter:
   image_picker: ^1.1.2
+  file_picker: ^10.1.2
   geolocator:
   flutter_localizations:
     sdk: flutter
