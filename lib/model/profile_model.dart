@@ -31,6 +31,7 @@ class Data {
     required this.isDeleted,
     required this.store,
     required this.updatedAt,
+    required this.bankAccount,
   });
 
   final String? id;
@@ -43,6 +44,7 @@ class Data {
   final bool? isDeleted;
   final Store? store;
   final DateTime? updatedAt;
+  final String? bankAccount;
 
   factory Data.fromJson(Map<String, dynamic> json){
     return Data(
@@ -56,6 +58,7 @@ class Data {
       isDeleted: json["is_deleted"],
       store: json["store"] == null ? null : Store.fromJson(json["store"]),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      bankAccount: json["bank_account"],
     );
   }
 
