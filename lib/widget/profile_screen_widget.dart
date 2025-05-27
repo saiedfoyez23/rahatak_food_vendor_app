@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
+import 'package:rahatak_food_vendor_app/utils/helper/local_store.dart';
 import 'package:rahatak_food_vendor_app/utils/utils.dart';
 
 import '../screen/screen.dart';
@@ -5419,6 +5421,7 @@ class ProfileScreenWidget extends GetxController {
                     child: TextButton(
                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
                       onPressed: () async {
+                        LocalStorage.removeData(key: AppConstant.token);
                         Get.off(()=>LoginScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                       },
                       child: Center(

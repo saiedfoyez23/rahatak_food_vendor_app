@@ -2,11 +2,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rahatak_food_vendor_app/controller/login_controller.dart';
+import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
+import 'package:rahatak_food_vendor_app/widget/custom_snackbar.dart';
 
+import '../screen/forget_view.dart';
 import '../screen/screen.dart';
 import '../utils/utils.dart';
 
 class LoginScreenWidget extends GetxController {
+
+  final LoginController loginController = Get.put(LoginController());
 
   Rx<TextEditingController> emailPhoneController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
@@ -435,7 +441,7 @@ class LoginScreenWidget extends GetxController {
                             child: TextButton(
                               style: TextButton.styleFrom(padding: EdgeInsets.zero),
                               onPressed: () async {
-                                Get.off(()=>ForgotPasswordScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                                Get.to(()=>ForgotView(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                               },
                               child: Text(
                                 "Forgot your password?".tr,
@@ -465,13 +471,23 @@ class LoginScreenWidget extends GetxController {
                         color: ColorUtils.blue192,
                         borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
                       ),
-                      child: TextButton(
+                      child:  TextButton(
                         style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                        onPressed: () async {
-                          Get.off(()=>HomeScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                        onPressed: ()  {
+
+                          if(emailPhoneController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty){
+                            loginController.login(email: emailPhoneController.value.text, password: passwordController.value.text);
+                          }else{
+                            kSnackBar(message: "Enter your mail & password", bgColor: AppColors.red);
+                          }
+
+
                         },
                         child: Center(
-                          child: Text(
+                          child: loginController.isLoading.value == true?  SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(color: AppColors.white,)):  Text(
                             "Login".tr,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.tajawal(

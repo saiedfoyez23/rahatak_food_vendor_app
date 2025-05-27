@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
+import 'package:rahatak_food_vendor_app/utils/helper/local_store.dart';
 
 import '../screen/screen.dart';
 import '../utils/utils.dart';
@@ -12,7 +14,18 @@ class SplashScreenWidget extends GetxController {
     // TODO: implement onInit
     super.onInit();
     Future.delayed(Duration(seconds: 5),() async {
-      Get.off(()=>AuthenticationSplashScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+
+
+
+      var token = LocalStorage.getData(key: AppConstant.token);
+      print("this is token: $token");
+      if(token != null){
+        Get.offAll(()=>HomeScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn);
+      }else{
+        Get.off(()=>AuthenticationSplashScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+      }
+
+
     });
   }
 

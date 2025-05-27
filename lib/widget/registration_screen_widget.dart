@@ -2,25 +2,39 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:rahatak_food_vendor_app/controller/registration_controller.dart';
 import '../screen/screen.dart';
+import '../utils/app_color/app_colors.dart';
 import '../utils/utils.dart';
+import 'custom_snackbar.dart';
+
 
 class RegistrationScreenWidget extends GetxController {
-
   Rx<TextEditingController> restaurantNameController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> phoneNumberController = TextEditingController().obs;
   Rx<TextEditingController> bankAccountController = TextEditingController().obs;
-  Rx<TextEditingController> governorateController = TextEditingController().obs;
   Rx<TextEditingController> stateController = TextEditingController().obs;
   Rx<TextEditingController> locationLinkController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
   RxBool obscureText = true.obs;
   RxBool isCheckIn = false.obs;
+  RxString selectedGovernorate = 'muscat'.obs;
+  final List<String> governorates = [
+    "muscat",
+    "al-batinah",
+    "musandam",
+    "al-wusta",
+    "ad-dakhiliyah",
+    "al-dhahirah",
+    "sharkia",
+    "dhofar"
+  ];
+
+  final RegistrationController _registrationController = Get.put(RegistrationController());
 
   Widget registrationScreenWidget({required BuildContext context}) {
-    return Obx(()=>SafeArea(
+    return Obx(() => SafeArea(
       child: Container(
         height: MediaQuery.sizeOf(context).height > 1000 ? 1133.ht(context) : 844.hm(context),
         width: MediaQuery.sizeOf(context).width > 500 ? 744.wt(context) : 390.wm(context),
@@ -29,8 +43,6 @@ class RegistrationScreenWidget extends GetxController {
         ),
         child: CustomScrollView(
           slivers: [
-
-
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(
@@ -40,19 +52,14 @@ class RegistrationScreenWidget extends GetxController {
                 ),
                 child: Column(
                   children: [
-
-
                     SpacerWidget.spacerWidget(
                       spaceHeight: MediaQuery.sizeOf(context).height > 1000 ?
                       11.ht(context) :
                       11.hm(context),
                     ),
-
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-
                         Container(
                           height: MediaQuery.sizeOf(context).height > 1000 ? 28.ht(context) : 24.hm(context),
                           width: MediaQuery.sizeOf(context).width > 500 ? 28.wt(context) : 24.wm(context),
@@ -94,7 +101,6 @@ class RegistrationScreenWidget extends GetxController {
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-
                                           Container(
                                             height: MediaQuery.sizeOf(context).height > 1000 ? 42.ht(context) : 42.hm(context),
                                             width: MediaQuery.sizeOf(context).width > 500 ? 150.wt(context) : 150.wm(context),
@@ -121,7 +127,6 @@ class RegistrationScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
                                           Container(
                                             height: MediaQuery.sizeOf(context).height > 1000 ? 42.ht(context) : 42.hm(context),
                                             width: MediaQuery.sizeOf(context).width > 500 ? 150.wt(context) : 150.wm(context),
@@ -148,9 +153,6 @@ class RegistrationScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
-
                                         ],
                                       ),
                                     ),
@@ -170,10 +172,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ],
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 127.ht(context) : 44.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Alignment.center,
@@ -188,9 +187,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 45.ht(context) : 32.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -205,10 +202,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
-
                     TextFormField(
                       controller: restaurantNameController.value,
                       textAlign: TextAlign.start,
@@ -241,28 +235,25 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
                       child: Text(
                         "Email *".tr,
-                        textAlign:  Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+                        textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
                         style: GoogleFonts.tajawal(
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
@@ -271,9 +262,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
                     TextFormField(
                       controller: emailController.value,
                       textAlign: TextAlign.start,
@@ -306,22 +295,19 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -336,9 +322,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
                     TextFormField(
                       controller: phoneNumberController.value,
                       textAlign: TextAlign.start,
@@ -371,23 +355,19 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -402,9 +382,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
                     TextFormField(
                       controller: bankAccountController.value,
                       textAlign: TextAlign.start,
@@ -437,23 +415,19 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -468,58 +442,56 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
-                    TextFormField(
-                      controller: governorateController.value,
-                      textAlign: TextAlign.start,
-                      cursorColor: ColorUtils.blue192,
-                      cursorHeight: MediaQuery.sizeOf(context).height > 1000 ? 20.ht(context) : 20.hm(context),
-                      style: GoogleFonts.tajawal(
-                        fontSize: MediaQuery.sizeOf(context).height > 1000 ? 16.spt(context) : 16.spm(context),
-                        fontStyle: FontStyle.normal,
-                        color: ColorUtils.black51,
-                        fontWeight: FontWeight.w400,
+                    Container(
+                      width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
+                      height: MediaQuery.sizeOf(context).height > 1000 ? 52.ht(context) : 48.hm(context),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: ColorUtils.gray163, width: 1),
+                        borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
+                        color: ColorUtils.white255,
                       ),
-                      textAlignVertical: TextAlignVertical.center,
-                      decoration: InputDecoration(
-                        hintText: "Enter your governorate".tr,
-                        hintStyle: GoogleFonts.tajawal(
-                          fontSize: MediaQuery.sizeOf(context).height > 1000 ? 16.spt(context) : 16.spm(context),
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          color: ColorUtils.gray136,
+                      child: Obx(() => DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: selectedGovernorate.value,
+                          isExpanded: true,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 20,
+                          ),
+                          items: governorates.map((String governorate) {
+                            return DropdownMenuItem<String>(
+                              value: governorate,
+                              child: Text(
+                                governorate.tr,
+                                style: GoogleFonts.tajawal(
+                                  fontSize: MediaQuery.sizeOf(context).height > 1000 ? 16.spt(context) : 16.spm(context),
+                                  fontStyle: FontStyle.normal,
+                                  color: ColorUtils.black51,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              selectedGovernorate.value = newValue;
+                              print('Selected Governorate: $newValue');
+                            }
+                          },
+                          style: GoogleFonts.tajawal(
+                            fontSize: MediaQuery.sizeOf(context).height > 1000 ? 16.spt(context) : 16.spm(context),
+                            color: ColorUtils.black51,
+                          ),
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: ColorUtils.gray136,
+                            size: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context),
+                          ),
                         ),
-                        filled: true,
-                        fillColor: ColorUtils.white255,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.sizeOf(context).width > 500 ? 12.hpmt(context) : 12.hpmm(context),
-                          vertical: MediaQuery.sizeOf(context).height > 1000 ? 12.vpmt(context) : 12.vpmm(context),
-                        ),
-                        constraints: BoxConstraints(
-                          maxWidth: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
-                          maxHeight: MediaQuery.sizeOf(context).height > 1000 ? 52.ht(context) : 48.hm(context),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
-                        ),
-
-                      ),
+                      )),
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -534,9 +506,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
                     TextFormField(
                       controller: stateController.value,
                       textAlign: TextAlign.start,
@@ -569,23 +539,19 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -600,9 +566,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
                     TextFormField(
                       controller: locationLinkController.value,
                       textAlign: TextAlign.start,
@@ -635,23 +599,19 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
@@ -666,9 +626,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 12.ht(context) : 12.hm(context)),
-
                     TextFormField(
                       controller: passwordController.value,
                       textAlign: TextAlign.start,
@@ -720,12 +678,12 @@ class RegistrationScreenWidget extends GetxController {
                               }
                             },
                             child: FittedBox(
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               child: Image.asset(
                                 obscureText.value == true ?
                                 ImagePathUtils.visibilityOffFocusIconImagePath :
                                 ImagePathUtils.visibilityFocusIconImagePath,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 alignment: Alignment.center,
                               ),
                             ),
@@ -740,27 +698,21 @@ class RegistrationScreenWidget extends GetxController {
                           maxWidth: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                           maxHeight: MediaQuery.sizeOf(context).height > 1000 ? 52.ht(context) : 48.hm(context),
                         ),
-                        border:  OutlineInputBorder(
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.gray163, width: 1),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
-                          borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
+                          borderSide: BorderSide(color: ColorUtils.blue192, width: 1),
                         ),
-
                       ),
                     ),
-
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 24.ht(context) : 24.hm(context)),
-
-
                     Container(
                       height: MediaQuery.sizeOf(context).height > 1000 ? 25.ht(context) : 25.hm(context),
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
@@ -781,7 +733,6 @@ class RegistrationScreenWidget extends GetxController {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-
                             Container(
                               height: MediaQuery.sizeOf(context).height > 1000 ? 18.ht(context) : 18.hm(context),
                               width: MediaQuery.sizeOf(context).width > 500 ? 18.wt(context) : 18.wm(context),
@@ -789,19 +740,17 @@ class RegistrationScreenWidget extends GetxController {
                                   color: Colors.transparent
                               ),
                               child: FittedBox(
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 child: Image.asset(
                                   isCheckIn.value == true ?
                                   ImagePathUtils.checkBoxImagePath :
                                   ImagePathUtils.uncheckBoxImagePath,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                   alignment: Alignment.center,
                                 ),
                               ),
                             ),
-
                             SpacerWidget.spacerWidget(spaceWidth: MediaQuery.sizeOf(context).width > 500 ? 8.wt(context) : 8.wm(context)),
-
                             RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
@@ -825,117 +774,58 @@ class RegistrationScreenWidget extends GetxController {
                                 ],
                               ),
                             ),
-
-
                           ],
                         ),
                       ),
                     ),
-
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 48.ht(context) : 45.hm(context)),
-
-
-                    Container(
+                 Container(
                       height: MediaQuery.sizeOf(context).height > 1000 ? 52.ht(context) : 48.hm(context),
                       width: MediaQuery.sizeOf(context).width > 500 ? 300.wt(context) : 300.wm(context),
                       decoration: BoxDecoration(
                         color: ColorUtils.blue192,
                         borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 8.rt(context) : 8.rm(context)),
                       ),
-                      child: TextButton(
+                      child:   TextButton(
                         style: TextButton.styleFrom(padding: EdgeInsets.zero),
                         onPressed: () async {
-                          showAdaptiveDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: MediaQuery.sizeOf(context).height > 1000 ? 406.vpmt(context) : 251.vpmm(context),
-                                  horizontal: MediaQuery.sizeOf(context).width > 500 ? 158.hpmt(context) : 16.hpmm(context),
-                                ),
-                                child: Container(
-                                  width: MediaQuery.sizeOf(context).width > 500 ? 414.wt(context) : 358.wm(context),
-                                  height: MediaQuery.sizeOf(context).height > 1000 ? 247.ht(context) : 303.hm(context),
-                                  decoration: BoxDecoration(
-                                    color: ColorUtils.white255,
-                                    borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).height > 1000 ? 16.rt(context) : 16.rm(context)),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: MediaQuery.sizeOf(context).height > 1000 ? 30.vpmt(context) : 30.vpmm(context),
-                                    horizontal: MediaQuery.sizeOf(context).width > 500 ? 20.hpmt(context) : 20.hpmm(context),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
+                          if (!isCheckIn.value) {
+                            kSnackBar(message: "Please agree to the terms and conditions".tr, bgColor: AppColors.red);
+                            return;
+                          }
+                          if (restaurantNameController.value.text.isEmpty ||
+                              emailController.value.text.isEmpty ||
+                              phoneNumberController.value.text.isEmpty ||
+                              bankAccountController.value.text.isEmpty ||
+                              stateController.value.text.isEmpty ||
+                              locationLinkController.value.text.isEmpty ||
+                              passwordController.value.text.isEmpty) {
+                            kSnackBar(message: "Please fill all required fields".tr, bgColor: AppColors.red);
+                            return;
+                          }
 
-
-                                      Container(
-                                        height: MediaQuery.sizeOf(context).height > 1000 ? 64.ht(context) : 64.hm(context),
-                                        width: MediaQuery.sizeOf(context).width > 500 ? 64.wt(context) : 64.wm(context),
-                                        decoration: BoxDecoration(
-                                            color: Colors.transparent
-                                        ),
-                                        child: FittedBox(
-                                          fit: BoxFit.cover,
-                                          child: Image.asset(
-                                            ImagePathUtils.signUpScreenImagePath,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-
-
-                                      SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 18.ht(context) : 18.hm(context)),
-
-
-                                      Container(
-                                        width: MediaQuery.sizeOf(context).width > 500  ? 428.wt(context) : 358.wm(context),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Your account has been created successfully!".tr,
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.tajawal(
-                                            fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: MediaQuery.sizeOf(context).height > 1000 ? 18.spt(context) : 18.spm(context),
-                                            color: ColorUtils.black33,
-                                            height: MediaQuery.sizeOf(context).height > 1000 ? (35.ht(context) / 18.spt(context)) : (35.hm(context) / 18.spm(context)),
-                                          ),
-                                        ),
-                                      ),
-
-                                      Container(
-                                        width: MediaQuery.sizeOf(context).width > 500  ? 428.wt(context) : 358.wm(context),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "You can now log in and start ordering your favorite meals with ease.".tr,
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.tajawal(
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: MediaQuery.sizeOf(context).height > 1000 ? 18.spt(context) : 16.spm(context),
-                                            color: ColorUtils.black33,
-                                            height: MediaQuery.sizeOf(context).height > 1000 ? (35.ht(context) / 18.spt(context)) : (35.hm(context) / 16.spm(context)),
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
+                          await _registrationController.register(
+                            email: emailController.value.text,
+                            password: passwordController.value.text,
+                            storeName: restaurantNameController.value.text,
+                            contact: phoneNumberController.value.text,
+                            bankAccount: bankAccountController.value.text,
+                            governorate: selectedGovernorate.value,
+                            state: stateController.value.text,
+                            locationLink: locationLinkController.value.text,
                           );
-                          Future.delayed(Duration(seconds: 5),() async {
-                            Get.back();
-                            Get.off(()=>LoginScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
-                          });
+
+                          // Future.delayed(Duration(seconds: 5), () async {
+                          //   Get.back();
+                          //
+                          //   // Navigation to LoginScreen is handled in RegistrationController if successful
+                          // });
                         },
                         child: Center(
-                          child: Text(
+                          child: _registrationController.isLoading.value == true? SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(color: AppColors.white,)) :  Text(
                             "Create account".tr,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.tajawal(
@@ -948,10 +838,7 @@ class RegistrationScreenWidget extends GetxController {
                         ),
                       ),
                     ),
-
                     SpacerWidget.spacerWidget(spaceHeight: MediaQuery.sizeOf(context).height > 1000 ? 28.ht(context) : 28.hm(context)),
-
-
                     Container(
                       width: MediaQuery.sizeOf(context).width > 500 ? 468.wt(context) : 358.wm(context),
                       decoration: BoxDecoration(
@@ -977,30 +864,20 @@ class RegistrationScreenWidget extends GetxController {
                                 fontWeight: FontWeight.w500,
                               ),
                               recognizer: TapGestureRecognizer()..onTap = () {
-                                Get.off(()=>LoginScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                                Get.off(() => LoginScreen(), duration: Duration(milliseconds: 300), transition: Transition.fadeIn, preventDuplicates: false);
                               },
                             ),
                           ],
                         ),
                       ),
                     ),
-
-
-
-
-
-
                   ],
                 ),
               ),
             )
-
-
           ],
         ),
       ),
     ));
   }
-
-
 }
