@@ -10,6 +10,9 @@ class Api {
   static const resetPassword = "$baseUrl/auth/reset-forgotten-password";
   static const verifyOtp = "$baseUrl/auth/verify-otp";
   static const sendOtp = "$baseUrl/auth/send-otp";
+  static const profile = "$baseUrl/vendors/profile";
+
+  static  allProduct({required String storeID}) =>  "$baseUrl/products?store=$storeID";
 
 
 }
