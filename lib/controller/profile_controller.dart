@@ -97,7 +97,9 @@ class ProfileController extends GetxController {
 
         profile.value = ProfileModel.fromJson(responseBody);
         LocalStorage.saveData(key: AppConstant.storeId, data: profile.value.data?.store?.id);
+        LocalStorage.saveData(key: AppConstant.vendorId, data: profile.value.data?.id);
         print("ID::: ${LocalStorage.getData(key: AppConstant.storeId)}");
+        print("Vendor ID::: ${LocalStorage.getData(key: AppConstant.storeId)}");
       } else {
         throw 'Failed to fetch profile!';
       }

@@ -2200,10 +2200,6 @@ class OrderScreenWidget extends GetxController {
                             ],
                           )
 
-
-
-
-
                         ],
                       ),
                     ),
@@ -2551,11 +2547,6 @@ class OrderScreenWidget extends GetxController {
 
 
                                   Icon(thirdOrder.value == false ? Icons.keyboard_arrow_up_rounded :Icons.keyboard_arrow_down_rounded,size: 25.sm(context),color: ColorUtils.blue192,),
-
-
-
-
-
                                 ],
                               ),
                             ),
@@ -2565,10 +2556,7 @@ class OrderScreenWidget extends GetxController {
                           SpacerWidget.spacerWidget() :
                           Column(
                             children: [
-
                               SpacerWidget.spacerWidget(spaceHeight: 13.hm(context)),
-
-
                               Container(
                                 width: 390.wm(context),
                                 padding: EdgeInsets.symmetric(vertical: 9.vpmm(context),horizontal: 9.hpmm(context)),
@@ -2583,8 +2571,6 @@ class OrderScreenWidget extends GetxController {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-
-
                                     Container(
                                       height: 100.hm(context),
                                       width: 80.wm(context),
@@ -2599,15 +2585,11 @@ class OrderScreenWidget extends GetxController {
                                         ),
                                       ),
                                     ),
-
                                     SpacerWidget.spacerWidget(spaceWidth: 13.wm(context)),
-
-
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2621,10 +2603,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2638,11 +2617,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2656,11 +2631,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2674,22 +2645,13 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
-
                                         ],
                                       ),
                                     )
-
-
                                   ],
                                 ),
                               ),
-
-
                               SpacerWidget.spacerWidget(spaceHeight: 17.hm(context)),
-
-
                               Container(
                                 width: 390.wm(context),
                                 padding: EdgeInsets.symmetric(vertical: 9.vpmm(context),horizontal: 9.hpmm(context)),
@@ -2704,8 +2666,6 @@ class OrderScreenWidget extends GetxController {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-
-
                                     Container(
                                       height: 100.hm(context),
                                       width: 80.wm(context),
@@ -2720,15 +2680,11 @@ class OrderScreenWidget extends GetxController {
                                         ),
                                       ),
                                     ),
-
                                     SpacerWidget.spacerWidget(spaceWidth: 13.wm(context)),
-
-
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2742,10 +2698,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2759,10 +2712,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2776,10 +2726,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2793,20 +2740,13 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                         ],
                                       ),
                                     )
-
-
                                   ],
                                 ),
                               ),
-
                               SpacerWidget.spacerWidget(spaceHeight: 17.hm(context)),
-
-
                               Container(
                                 width: 390.wm(context),
                                 padding: EdgeInsets.symmetric(vertical: 9.vpmm(context),horizontal: 9.hpmm(context)),
@@ -2817,8 +2757,6 @@ class OrderScreenWidget extends GetxController {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-
-
                                     Container(
                                       height: 100.hm(context),
                                       width: 80.wm(context),
@@ -2833,15 +2771,11 @@ class OrderScreenWidget extends GetxController {
                                         ),
                                       ),
                                     ),
-
                                     SpacerWidget.spacerWidget(spaceWidth: 13.wm(context)),
-
-
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2855,10 +2789,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2872,11 +2803,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2890,10 +2817,7 @@ class OrderScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
                                           SpacerWidget.spacerWidget(spaceHeight: 8.hm(context)),
-
-
                                           Container(
                                             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                             child: Text(
@@ -2910,13 +2834,9 @@ class OrderScreenWidget extends GetxController {
                                         ],
                                       ),
                                     )
-
-
                                   ],
                                 ),
                               ),
-
-
                               Container(
                                 height: 1.5.hm(context),
                                 width: 390.wm(context),
@@ -2924,12 +2844,7 @@ class OrderScreenWidget extends GetxController {
                                     color: ColorUtils.white217
                                 ),
                               ),
-
-
-
                               SpacerWidget.spacerWidget(spaceHeight: 11.hm(context)),
-
-
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -2946,8 +2861,6 @@ class OrderScreenWidget extends GetxController {
                                       ),
                                     ),
                                   ),
-
-
                                   Container(
                                     alignment: Get.locale.toString() == "en" ? Alignment.centerLeft :  Alignment.centerRight,
                                     child: Text(
@@ -2965,29 +2878,14 @@ class OrderScreenWidget extends GetxController {
                               ),
                             ],
                           )
-
-
-
-
-
                         ],
                       ),
                     ),
-
-
-
                     SpacerWidget.spacerWidget(spaceHeight: 16.hm(context)),
-
-                
-                
                   ],
                 ),
               ),
             )
-
-
-
-
           ],
         ),
       ),

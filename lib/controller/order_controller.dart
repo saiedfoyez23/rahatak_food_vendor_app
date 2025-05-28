@@ -1,78 +1,66 @@
 import 'package:get/get.dart';
-import 'package:rahatak_food_vendor_app/data/base_client.dart';
-import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
-import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
-import 'package:rahatak_food_vendor_app/utils/helper/local_store.dart';
-import 'package:rahatak_food_vendor_app/widget/custom_snackbar.dart';
-import '../model/order_model.dart';
 
 class OrderController extends GetxController {
-  var isLoading = false.obs;
-  var allOrders = <OrderData>[].obs;
-  var pendingOrders = <OrderData>[].obs;
-  var receivedOrders = <OrderData>[].obs;
-  var processingOrders = <OrderData>[].obs;
-  var ongoingOrders = <OrderData>[].obs;
-  var deliveredOrders = <OrderData>[].obs;
-  var canceledOrders = <OrderData>[].obs;
-  var totalOrders = 0.obs;
+  RxString changeOrder = "New Orders".obs;
 
-  @override
-  void onInit() {
-    getOrders();
-    super.onInit();
+  RxString firstChangeStatus = "".obs;
+  RxBool firstOrderTrack = false.obs;
+  RxBool firstOrder = false.obs;
+
+  RxString secondChangeStatus = "".obs;
+  RxBool secondOrderTrack = false.obs;
+  RxBool secondOrder = false.obs;
+
+  RxString thirdChangeStatus = "".obs;
+  RxBool thirdOrderTrack = false.obs;
+  RxBool thirdOrder = false.obs;
+
+  void updateOrderType(String type) {
+    changeOrder.value = type;
   }
 
-  Future<void> getOrders() async {
-    try {
-      isLoading(true);
+  void toggleOrderTrack(int index) {
+    switch (index) {
+      case 0:
+        firstOrderTrack.value = !firstOrderTrack.value;
+        break;
+      case 1:
+        secondOrderTrack.value = !secondOrderTrack.value;
+        break;
+      case 2:
+        thirdOrderTrack.value = !thirdOrderTrack.value;
+        break;
+    }
+  }
 
-      Map<String, String> headers = {
-        'Authorization': "${LocalStorage.getData(key: AppConstant.token)}",
-        'Content-Type': 'application/json',
-      };
+  void updateOrderStatus(int index, String status) {
+    switch (index) {
+      case 0:
+        firstChangeStatus.value = status;
+        firstOrderTrack.value = false;
+        break;
+      case 1:
+        secondChangeStatus.value = status;
+        secondOrderTrack.value = false;
+        break;
+      case 2:
+        thirdChangeStatus.value = status;
+        thirdOrderTrack.value = false;
+        break;
+    }
+  }
 
-      dynamic responseBody = await BaseClient.handleResponse(
-        await BaseClient.getRequest(
-          api: 'http://192.168.10.43:5010/api/v1/orders/vendor',
-          headers: headers,
-        ),
-      );
-
-      if (responseBody != null) {
-        OrderModel orderModel = OrderModel.fromJson(responseBody);
-        if (orderModel.success == true && orderModel.data != null) {
-          allOrders.assignAll(orderModel.data!.data);
-          pendingOrders.assignAll(
-            orderModel.data!.data.where((order) => order.status == 'pending').toList(),
-          );
-          receivedOrders.assignAll(
-            orderModel.data!.data.where((order) => order.status == 'received').toList(),
-          );
-          processingOrders.assignAll(
-            orderModel.data!.data.where((order) => order.status == 'processing').toList(),
-          );
-          ongoingOrders.assignAll(
-            orderModel.data!.data.where((order) => order.status == 'ongoing').toList(),
-          );
-          deliveredOrders.assignAll(
-            orderModel.data!.data.where((order) => order.status == 'delivered').toList(),
-          );
-          canceledOrders.assignAll(
-            orderModel.data!.data.where((order) => order.status == 'canceled').toList(),
-          );
-          totalOrders.value = orderModel.data!.meta?.total ?? 0;
-        } else {
-          throw orderModel.message ?? 'Failed to fetch orders!';
-        }
-      } else {
-        throw 'Failed to fetch orders!';
-      }
-    } catch (e) {
-      print("Catch Error: $e");
-      kSnackBar(message: e.toString(), bgColor: AppColors.red);
-    } finally {
-      isLoading(false);
+  void toggleOrderDetails(int index) {
+    switch (index) {
+      case 0:
+        firstOrder.value = !firstOrder.value;
+        break;
+      case 1:
+        secondOrder.value = !secondOrder.value;
+        break;
+      case 2:
+        thirdOrder.value = !thirdOrder.value;
+        break;
     }
   }
 }
