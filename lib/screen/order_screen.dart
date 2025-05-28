@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/order_controller.dart';
-import '../widget/widget.dart';
+import 'order_header.dart';
+import 'order_list.dart';
 import '../utils/utils.dart';
 
-
 class OrderScreen extends StatelessWidget {
-  OrderScreen({super.key});
+   OrderScreen({super.key});
 
-  final OrderScreenWidget orderScreenWidget = Get.put(OrderScreenWidget());
   final OrderController orderController = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: orderScreenWidget.orderScreenWidget(context: context),
+      body: SafeArea(
+        child: Container(
+          height: 844.hm(context),
+          width: 390.wm(context),
+          decoration: BoxDecoration(
+            color: ColorUtils.white248,
+          ),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: OrderHeader(),
+              ),
+              SliverToBoxAdapter(
+                child: OrderList(),
+              ),
+            ],
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBarWidget().bottomNavigationBarWidget(
         context: context,
         isHomeFocus: false,
