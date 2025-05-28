@@ -11,6 +11,7 @@ import 'package:rahatak_food_vendor_app/utils/utils.dart';
 import '../controller/category_controller.dart';
 import '../controller/profile_controller.dart';
 import '../model/profile_model.dart';
+import '../screen/change_password.dart';
 import '../screen/screen.dart';
 import '../utils/app_color/app_colors.dart';
 
@@ -49,6 +50,11 @@ class ProfileScreenWidget extends GetxController {
 
   final ProfileController profileController = Get.put(ProfileController());
   final CategoryController categoryController = Get.put(CategoryController());
+
+  void savePassword() {
+    // Implement API call or password update logic here
+  //  print("Saving password: ${passwordController.text}");
+  }
 
 
 
@@ -2351,471 +2357,42 @@ class ProfileScreenWidget extends GetxController {
 
                         SizedBox(
                           height: 54.hm(context),
-                          width: 390.wm(context),
+                          width: double.infinity, // Responsive width
                           child: TextButton(
                             style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () async {
+                            onPressed: () {
                               showAdaptiveDialog(
                                 context: context,
                                 barrierDismissible: true,
-                                builder: (context) {
-                                  return Obx(()=>Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 180.vpmm(context),
-                                      horizontal: 16.hpmm(context),
-                                    ),
-                                    child: Container(
-                                      width: 358.wm(context),
-                                      height: 435.hm(context),
-                                      decoration: BoxDecoration(
-                                        color: ColorUtils.white255,
-                                        borderRadius: BorderRadius.circular(16.rm(context)),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 30.vpmm(context),
-                                        horizontal: 20.hpmm(context),
-                                      ),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-
-                                            Container(
-                                              width: 358.wm(context),
-                                              alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
-                                              child: Text(
-                                                "Current Password".tr,
-                                                textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
-                                                style: GoogleFonts.tajawal(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 16.spm(context),
-                                                  color: ColorUtils.black33,
-                                                ),
-                                              ),
-                                            ),
-
-                                            SpacerWidget.spacerWidget(spaceHeight: 12.hm(context)),
-
-                                            TextFormField(
-                                              controller: currentPasswordController.value,
-                                              textAlign: TextAlign.start,
-                                              cursorColor: ColorUtils.blue192,
-                                              style: currentObscureText.value == true ?
-                                              GoogleFonts.openSans(
-                                                fontSize: 16.spm(context),
-                                                fontStyle: FontStyle.normal,
-                                                color: ColorUtils.black51,
-                                                fontWeight: FontWeight.w400,
-                                              ) :
-                                              GoogleFonts.tajawal(
-                                                fontSize: 16.spm(context),
-                                                fontStyle: FontStyle.normal,
-                                                color: ColorUtils.black51,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              cursorHeight: 20.hm(context),
-                                              obscureText: currentObscureText.value,
-                                              textAlignVertical: TextAlignVertical.center,
-                                              obscuringCharacter: "*",
-                                              decoration: InputDecoration(
-                                                alignLabelWithHint: true,
-                                                hintText: "********",
-                                                hintStyle: GoogleFonts.openSans(
-                                                  fontSize: 16.spm(context),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                  color: ColorUtils.gray136,
-                                                ),
-                                                filled: true,
-                                                suffixIcon: Container(
-                                                  height: 24.hm(context),
-                                                  width: 24.wm(context),
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 12.hpmm(context),
-                                                    vertical: 12.vpmm(context),
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.transparent
-                                                  ),
-                                                  child: TextButton(
-                                                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                    onPressed: () {
-                                                      if(currentObscureText.value == true) {
-                                                        currentObscureText.value = false;
-                                                      } else {
-                                                        currentObscureText.value = true;
-                                                      }
-                                                    },
-                                                    child: FittedBox(
-                                                      fit: BoxFit.cover,
-                                                      child: Image.asset(
-                                                        currentObscureText.value == true ?
-                                                        ImagePathUtils.visibilityOffFocusIconImagePath :
-                                                        ImagePathUtils.visibilityFocusIconImagePath,
-                                                        fit: BoxFit.cover,
-                                                        alignment: Alignment.center,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                fillColor: ColorUtils.white255,
-                                                contentPadding: EdgeInsets.symmetric(
-                                                  horizontal: 12.hpmm(context),
-                                                  vertical: 12.vpmm(context),
-                                                ),
-                                                constraints: BoxConstraints(
-                                                  maxWidth: 358.wm(context),
-                                                  maxHeight: 48.hm(context),
-                                                ),
-                                                border:  OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
-                                                ),
-
-                                              ),
-                                            ),
-
-
-                                            SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
-
-
-
-                                            Container(
-                                              width: 358.wm(context),
-                                              alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
-                                              child: Text(
-                                                "New Password".tr,
-                                                textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
-                                                style: GoogleFonts.tajawal(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 16.spm(context),
-                                                  color: ColorUtils.black33,
-                                                ),
-                                              ),
-                                            ),
-
-                                            SpacerWidget.spacerWidget(spaceHeight: 12.hm(context)),
-
-                                            TextFormField(
-                                              controller: passwordController.value,
-                                              textAlign: TextAlign.start,
-                                              cursorColor: ColorUtils.blue192,
-                                              style: obscureText.value == true ?
-                                              GoogleFonts.openSans(
-                                                fontSize: 16.spm(context),
-                                                fontStyle: FontStyle.normal,
-                                                color: ColorUtils.black51,
-                                                fontWeight: FontWeight.w400,
-                                              ) :
-                                              GoogleFonts.tajawal(
-                                                fontSize: 16.spm(context),
-                                                fontStyle: FontStyle.normal,
-                                                color: ColorUtils.black51,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              cursorHeight: 20.hm(context),
-                                              obscureText: obscureText.value,
-                                              textAlignVertical: TextAlignVertical.center,
-                                              obscuringCharacter: "*",
-                                              decoration: InputDecoration(
-                                                alignLabelWithHint: true,
-                                                hintText: "********",
-                                                hintStyle: GoogleFonts.openSans(
-                                                  fontSize: 16.spm(context),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                  color: ColorUtils.gray136,
-                                                ),
-                                                filled: true,
-                                                suffixIcon: Container(
-                                                  height: 24.hm(context),
-                                                  width: 24.wm(context),
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 12.hpmm(context),
-                                                    vertical: 12.vpmm(context),
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.transparent
-                                                  ),
-                                                  child: TextButton(
-                                                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                    onPressed: () {
-                                                      if(obscureText.value == true) {
-                                                        obscureText.value = false;
-                                                      } else {
-                                                        obscureText.value = true;
-                                                      }
-                                                    },
-                                                    child: FittedBox(
-                                                      fit: BoxFit.cover,
-                                                      child: Image.asset(
-                                                        obscureText.value == true ?
-                                                        ImagePathUtils.visibilityOffFocusIconImagePath :
-                                                        ImagePathUtils.visibilityFocusIconImagePath,
-                                                        fit: BoxFit.cover,
-                                                        alignment: Alignment.center,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                fillColor: ColorUtils.white255,
-                                                contentPadding: EdgeInsets.symmetric(
-                                                  horizontal: 12.hpmm(context),
-                                                  vertical: 12.vpmm(context),
-                                                ),
-                                                constraints: BoxConstraints(
-                                                  maxWidth: 358.wm(context),
-                                                  maxHeight: 48.hm(context),
-                                                ),
-                                                border:  OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
-                                                ),
-
-                                              ),
-                                            ),
-
-
-                                            SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
-
-
-                                            Container(
-                                              width: 358.wm(context),
-                                              alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
-                                              child: Text(
-                                                "Confirm Password".tr,
-                                                textAlign:  Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
-                                                style: GoogleFonts.tajawal(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 16.spm(context),
-                                                  color: ColorUtils.black33,
-                                                ),
-                                              ),
-                                            ),
-
-                                            SpacerWidget.spacerWidget(spaceHeight: 12.hm(context)),
-
-
-                                            TextFormField(
-                                              controller: confirmPasswordController.value,
-                                              textAlign: TextAlign.start,
-                                              cursorColor: ColorUtils.blue192,
-                                              style: confirmObscureText.value == true ?
-                                              GoogleFonts.openSans(
-                                                fontSize: 16.spm(context),
-                                                fontStyle: FontStyle.normal,
-                                                color: ColorUtils.black51,
-                                                fontWeight: FontWeight.w400,
-                                              ) :
-                                              GoogleFonts.tajawal(
-                                                fontSize: 16.spm(context),
-                                                fontStyle: FontStyle.normal,
-                                                color: ColorUtils.black51,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              cursorHeight: 20.hm(context),
-                                              obscureText: confirmObscureText.value,
-                                              textAlignVertical: TextAlignVertical.center,
-                                              obscuringCharacter: "*",
-                                              decoration: InputDecoration(
-                                                alignLabelWithHint: true,
-                                                hintText: "********",
-                                                hintStyle: GoogleFonts.openSans(
-                                                  fontSize: 16.spm(context),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                  color: ColorUtils.gray136,
-                                                ),
-                                                filled: true,
-                                                suffixIcon: Container(
-                                                  height: 24.hm(context),
-                                                  width: 24.wm(context),
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 12.hpmm(context),
-                                                    vertical: 12.vpmm(context),
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.transparent
-                                                  ),
-                                                  child: TextButton(
-                                                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                    onPressed: () {
-                                                      if(confirmObscureText.value == true) {
-                                                        confirmObscureText.value = false;
-                                                      } else {
-                                                        confirmObscureText.value = true;
-                                                      }
-                                                    },
-                                                    child: FittedBox(
-                                                      fit: BoxFit.cover,
-                                                      child: Image.asset(
-                                                        confirmObscureText.value == true ?
-                                                        ImagePathUtils.visibilityOffFocusIconImagePath :
-                                                        ImagePathUtils.visibilityFocusIconImagePath,
-                                                        fit: BoxFit.cover,
-                                                        alignment: Alignment.center,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                fillColor: ColorUtils.white255,
-                                                contentPadding: EdgeInsets.symmetric(
-                                                  horizontal: 12.hpmm(context),
-                                                  vertical: 12.vpmm(context),
-                                                ),
-                                                constraints: BoxConstraints(
-                                                  maxWidth: 358.wm(context),
-                                                  maxHeight: 48.hm(context),
-                                                ),
-                                                border:  OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.rm(context)),
-                                                  borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
-                                                ),
-
-                                              ),
-                                            ),
-
-
-
-
-
-                                            SpacerWidget.spacerWidget(spaceHeight: 20.hm(context),),
-
-
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-
-
-                                                Container(
-                                                  height: 48.hm(context),
-                                                  width: 153.wm(context),
-                                                  decoration: BoxDecoration(
-                                                    color: ColorUtils.blue192,
-                                                    borderRadius: BorderRadius.circular(8.rm(context),),
-                                                  ),
-                                                  child: TextButton(
-                                                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                    onPressed: () async {
-                                                      Get.back();
-                                                    },
-                                                    child: Center(
-                                                      child: Text(
-                                                        "Save".tr,
-                                                        textAlign: TextAlign.center,
-                                                        style: GoogleFonts.tajawal(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontStyle: FontStyle.normal,
-                                                          fontSize: 18.spm(context),
-                                                          color: ColorUtils.white255,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-
-                                                SpacerWidget.spacerWidget(spaceWidth: 12.wm(context),),
-
-
-                                                Container(
-                                                  height: 48.hm(context),
-                                                  width: 153.wm(context),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(color: ColorUtils.gray136,width: 1),
-                                                    color: ColorUtils.white255,
-                                                    borderRadius: BorderRadius.circular(8.rm(context),),
-                                                  ),
-                                                  child: TextButton(
-                                                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                    onPressed: () async {
-                                                      Get.back();
-                                                    },
-                                                    child: Center(
-                                                      child: Text(
-                                                        "Cancel".tr,
-                                                        textAlign: TextAlign.center,
-                                                        style: GoogleFonts.tajawal(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontStyle: FontStyle.normal,
-                                                          fontSize: 18.spm(context),
-                                                          color: ColorUtils.black51,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-
-
-                                              ],
-                                            )
-
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ));
-                                },
+                                builder: (context) => PasswordDialog(
+                                  currentPasswordController: currentPasswordController.value,
+                                  passwordController: passwordController.value,
+                                  confirmPasswordController: confirmPasswordController.value,
+                                  currentObscureText: currentObscureText,
+                                  obscureText: obscureText,
+                                  confirmObscureText: confirmObscureText,
+                                ),
                               );
                             },
                             child: Container(
                               height: 54.hm(context),
-                              width: 390.wm(context),
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent
-                              ),
+                              width: double.infinity,
+                              decoration: BoxDecoration(color: Colors.transparent),
                               child: Row(
                                 children: [
-
-
                                   Expanded(
                                     child: Row(
                                       children: [
-
-
                                         Container(
                                           height: 24.hm(context),
                                           width: 24.wm(context),
-                                          decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                          ),
+                                          decoration: BoxDecoration(color: Colors.transparent),
                                           child: FittedBox(
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.fill,
                                             child: Image.asset(ImagePathUtils.changePasswordIconImagePath),
                                           ),
                                         ),
-
-
                                         SpacerWidget.spacerWidget(spaceWidth: 10.wm(context)),
-
                                         Container(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
@@ -2829,35 +2406,25 @@ class ProfileScreenWidget extends GetxController {
                                             ),
                                           ),
                                         ),
-
-
                                       ],
                                     ),
                                   ),
-
-
                                   SpacerWidget.spacerWidget(spaceWidth: 10.wm(context)),
-
                                   Container(
                                     height: 24.hm(context),
                                     width: 24.wm(context),
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                    ),
+                                    decoration: BoxDecoration(color: Colors.transparent),
                                     child: FittedBox(
                                       fit: BoxFit.contain,
                                       child: Image.asset(
-                                        Get.locale.toString() == "en" ?
-                                        ImagePathUtils.arrowFilledIconImagePath :
-                                        ImagePathUtils.arrowFilledBackIconImagePath,
-                                        fit: BoxFit.cover,
+                                        Directionality.of(context) == TextDirection.ltr
+                                            ? ImagePathUtils.arrowFilledIconImagePath
+                                            : ImagePathUtils.arrowFilledBackIconImagePath,
+                                        fit: BoxFit.fill,
                                         alignment: Alignment.center,
                                       ),
                                     ),
                                   ),
-
-
-
                                 ],
                               ),
                             ),

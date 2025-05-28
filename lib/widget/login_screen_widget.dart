@@ -147,9 +147,6 @@ class LoginScreenWidget extends GetxController {
                                               ),
                                             ),
                                           ),
-
-
-
                                         ],
                                       ),
                                     ),
