@@ -20,7 +20,7 @@ class MenuScreenWidget extends GetxController {
   RxInt selectSize = 0.obs;
 
   Widget menuScreenWidget({required BuildContext context}) {
-    return SafeArea(
+    return Obx(() => SafeArea(
       child: Container(
         height: 844.hm(context),
         width: 390.wm(context),
@@ -1647,7 +1647,7 @@ class MenuScreenWidget extends GetxController {
           ],
         ),
       ),
-    );
+    ));
   }
 
 

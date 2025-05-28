@@ -8,7 +8,9 @@ import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
 import 'package:rahatak_food_vendor_app/utils/helper/local_store.dart';
 import 'package:rahatak_food_vendor_app/utils/utils.dart';
 
+import '../controller/category_controller.dart';
 import '../controller/profile_controller.dart';
+import '../model/profile_model.dart';
 import '../screen/screen.dart';
 import '../utils/app_color/app_colors.dart';
 
@@ -46,23 +48,50 @@ class ProfileScreenWidget extends GetxController {
 
 
   final ProfileController profileController = Get.put(ProfileController());
+  final CategoryController categoryController = Get.put(CategoryController());
 
 
 
   RxInt bigIndex_1 = 0.obs;
 
-  RxList<String> locations = <String>[
-    "Burger",
-    "Shawarma",
-    "Grilled meats",
-    "Fried foods",
-    "Pastries",
-    "Drinks",
-    "Pasta",
-    "Seafood",
-    "Healthy",
-  ].obs;
+  RxList<String> locations = <String>[].obs;
 
+
+
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    locations.assignAll(categoryController.categoryNames);
+
+    // Populate TextEditingControllers with ProfileModel data
+    restaurantNameController.value.text = profileController.profile.value.data?.store?.name ?? '';
+    emailAddressController.value.text = profileController.profile.value.data?.email ?? '';
+    phoneNumberController.value.text = profileController.profile.value.data?.store?.contact ?? '';
+    bankAccountController.value.text = profileController.profile.value.data?.bankAccount ?? '';
+    governorateController.value.text = profileController.profile.value.data?.store?.locations.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.locations.first.governorate ?? ''
+        : '';
+    stateController.value.text = profileController.profile.value.data?.store?.locations.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.locations.first.state ?? ''
+        : '';
+    locationLinkController.value.text = profileController.profile.value.data?.store?.locations.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.locations.first.locationLink ?? ''
+        : '';
+    startTimeController.value.text = profileController.profile.value.data?.store?.workingHours.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.workingHours.first.from ?? ''
+        : '';
+    endTimeController.value.text = profileController.profile.value.data?.store?.workingHours.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.workingHours.first.to ?? ''
+        : '';
+    restaurantClassificationController.value.text = profileController.profile.value.data?.store?.categories.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.categories.first.name ?? ''
+        : '';
+    workingHoursController.value.text = profileController.profile.value.data?.store?.workingHours.isNotEmpty ?? false
+        ? profileController.profile.value.data!.store!.workingHours.map((wh) => '${wh.from} - ${wh.to}').join(', ')
+        : '';
+  }
 
   Widget profileScreenWidget({required BuildContext context}) {
 
@@ -1202,6 +1231,7 @@ class ProfileScreenWidget extends GetxController {
                                                         color: ColorUtils.gray136,
                                                       ),
                                                       filled: true,
+
                                                       fillColor: ColorUtils.white255,
                                                       contentPadding: EdgeInsets.symmetric(
                                                         horizontal: 12.hpmm(context),
@@ -1528,7 +1558,7 @@ class ProfileScreenWidget extends GetxController {
                             ),
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
-                              hintText: "Muscat".tr,
+                              hintText:  "${profileController.profile.value.data?.store?.locations[0].governorate}",
                               hintStyle: GoogleFonts.tajawal(
                                 fontSize: 16.spm(context),
                                 fontWeight: FontWeight.w400,
@@ -1536,7 +1566,7 @@ class ProfileScreenWidget extends GetxController {
                                 color: ColorUtils.gray136,
                               ),
                               filled: true,
-                              enabled: true,
+                              enabled: false,
                               fillColor: ColorUtils.white243,
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12.hpmm(context),
@@ -1597,7 +1627,7 @@ class ProfileScreenWidget extends GetxController {
                             ),
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
-                              hintText: "Al Khoudh".tr,
+                              hintText: "${profileController.profile.value.data?.store?.locations[0].state}",
                               hintStyle: GoogleFonts.tajawal(
                                 fontSize: 16.spm(context),
                                 fontWeight: FontWeight.w400,
@@ -1605,7 +1635,7 @@ class ProfileScreenWidget extends GetxController {
                                 color: ColorUtils.gray136,
                               ),
                               filled: true,
-                              enabled: true,
+                              enabled: false,
                               fillColor: ColorUtils.white243,
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12.hpmm(context),
@@ -1842,101 +1872,78 @@ class ProfileScreenWidget extends GetxController {
 
                                                         Row(
                                                           children: [
+                                                            // Start Time Picker
                                                             Expanded(
-                                                              child: TextFormField(
-                                                                controller: startTimeController.value,
-                                                                textAlign: TextAlign.start,
-                                                                cursorColor: ColorUtils.blue192,
-                                                                cursorHeight: 20.hm(context),
-                                                                style: GoogleFonts.tajawal(
-                                                                  fontSize: 16.spm(context),
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: ColorUtils.black51,
-                                                                  fontWeight: FontWeight.w400,
-                                                                ),
-                                                                textAlignVertical: TextAlignVertical.center,
-                                                                decoration: InputDecoration(
-                                                                  hintText: "04:00 PM".tr,
-                                                                  hintStyle: GoogleFonts.tajawal(
-                                                                    fontSize: 16.spm(context),
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontStyle: FontStyle.normal,
-                                                                    color: ColorUtils.gray136,
-                                                                  ),
-                                                                  filled: true,
-                                                                  fillColor: ColorUtils.white255,
-                                                                  contentPadding: EdgeInsets.symmetric(
+                                                              child: GestureDetector(
+                                                                onTap: () => profileController.pickStartTime(context),
+                                                                child: Container(
+                                                                  padding: EdgeInsets.symmetric(
                                                                     horizontal: 12.hpmm(context),
                                                                     vertical: 12.vpmm(context),
+                                                                  ),
+                                                                  decoration: BoxDecoration(
+                                                                    color: ColorUtils.white255,
+                                                                    border: Border.all(color: ColorUtils.gray163, width: 1),
+                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
                                                                   ),
                                                                   constraints: BoxConstraints(
                                                                     maxHeight: 48.hm(context),
                                                                   ),
-                                                                  border: OutlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
-                                                                    borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                                  ),
-                                                                  enabledBorder: OutlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
-                                                                    borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                                  ),
-                                                                  focusedBorder: OutlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
-                                                                    borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
-                                                                  ),
-
+                                                                  child: Obx(() => Text(
+                                                                    profileController.startTime.value == null
+                                                                        ? "04:00 PM".tr
+                                                                        : profileController.startTime.value!.format(context),
+                                                                    textAlign: TextAlign.start,
+                                                                    style: GoogleFonts.tajawal(
+                                                                      fontSize: 16.spm(context),
+                                                                      fontStyle: FontStyle.normal,
+                                                                      color: profileController.startTime.value == null
+                                                                          ? ColorUtils.gray136
+                                                                          : ColorUtils.black51,
+                                                                      fontWeight: FontWeight.w400,
+                                                                    ),
+                                                                  )),
                                                                 ),
                                                               ),
                                                             ),
 
-                                                            SpacerWidget.spacerWidget(spaceWidth: 12.wm(context)),
+                                                            // Spacer
+                                                            SizedBox(width: 12.wm(context)), // Replaced SpacerWidget.spacerWidget
 
+                                                            // End Time Picker,
                                                             Expanded(
-                                                              child: TextFormField(
-                                                                controller: endTimeController.value,
-                                                                textAlign: TextAlign.start,
-                                                                cursorColor: ColorUtils.blue192,
-                                                                cursorHeight: 20.hm(context),
-                                                                style: GoogleFonts.tajawal(
-                                                                  fontSize: 16.spm(context),
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: ColorUtils.black51,
-                                                                  fontWeight: FontWeight.w400,
-                                                                ),
-                                                                textAlignVertical: TextAlignVertical.center,
-                                                                decoration: InputDecoration(
-                                                                  hintText: "11:00 PM".tr,
-                                                                  hintStyle: GoogleFonts.tajawal(
-                                                                    fontSize: 16.spm(context),
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontStyle: FontStyle.normal,
-                                                                    color: ColorUtils.gray136,
-                                                                  ),
-                                                                  filled: true,
-                                                                  fillColor: ColorUtils.white255,
-                                                                  contentPadding: EdgeInsets.symmetric(
+                                                              child: GestureDetector(
+                                                                onTap: () => profileController.pickEndTime(context),
+                                                                child: Container(
+                                                                  padding: EdgeInsets.symmetric(
                                                                     horizontal: 12.hpmm(context),
                                                                     vertical: 12.vpmm(context),
                                                                   ),
+                                                                  decoration: BoxDecoration(
+                                                                    color: ColorUtils.white255,
+                                                                    border: Border.all(color: ColorUtils.gray163, width: 1),
+                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
+                                                                  ),
                                                                   constraints: BoxConstraints(
-                                                                    maxWidth: 358.wm(context),
                                                                     maxHeight: 48.hm(context),
                                                                   ),
-                                                                  border: OutlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
-                                                                    borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                                  ),
-                                                                  enabledBorder: OutlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
-                                                                    borderSide: BorderSide(color: ColorUtils.gray163,width: 1),
-                                                                  ),
-                                                                  focusedBorder: OutlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(8.rm(context)),
-                                                                    borderSide: BorderSide(color: ColorUtils.blue192,width: 1),
-                                                                  ),
-
+                                                                  child: Obx(() => Text(
+                                                                    profileController.endTime.value == null
+                                                                        ? "11:00 PM".tr
+                                                                        : profileController.endTime.value!.format(context),
+                                                                    textAlign: TextAlign.start,
+                                                                    style: GoogleFonts.tajawal(
+                                                                      fontSize: 16.spm(context),
+                                                                      fontStyle: FontStyle.normal,
+                                                                      color: profileController.endTime.value == null
+                                                                          ? ColorUtils.gray136
+                                                                          : ColorUtils.black51,
+                                                                      fontWeight: FontWeight.w400,
+                                                                    ),
+                                                                  )),
                                                                 ),
-                                                              ),)
+                                                              ),
+                                                            ),
                                                           ],
                                                         ),
 
@@ -1945,38 +1952,38 @@ class ProfileScreenWidget extends GetxController {
 
 
 
-                                                        Container(
-                                                          height: 25.hm(context),
-                                                          width: 390.wm(context),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.transparent,
-                                                          ),
-                                                          child: TextButton(
-                                                            style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                            onPressed: null,
-                                                            child: Row(
-                                                              children: [
-                                                                Icon(Icons.add,size: 20.sm(context),color: ColorUtils.blue192,),
-                                                                SpacerWidget.spacerWidget(spaceWidth: 12.wm(context)),
-                                                                Expanded(
-                                                                  child: Container(
-                                                                    alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
-                                                                    child: Text(
-                                                                      "Add a new work hour".tr,
-                                                                      textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
-                                                                      style: GoogleFonts.tajawal(
-                                                                        fontWeight: FontWeight.w700,
-                                                                        fontStyle: FontStyle.normal,
-                                                                        fontSize: 16.spm(context),
-                                                                        color: ColorUtils.black33,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        // Container(
+                                                        //   height: 25.hm(context),
+                                                        //   width: 390.wm(context),
+                                                        //   decoration: BoxDecoration(
+                                                        //     color: Colors.transparent,
+                                                        //   ),
+                                                        //   child: TextButton(
+                                                        //     style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                                                        //     onPressed: null,
+                                                        //     child: Row(
+                                                        //       children: [
+                                                        //         Icon(Icons.add,size: 20.sm(context),color: ColorUtils.blue192,),
+                                                        //         SpacerWidget.spacerWidget(spaceWidth: 12.wm(context)),
+                                                        //         Expanded(
+                                                        //           child: Container(
+                                                        //             alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+                                                        //             child: Text(
+                                                        //               "Add a new work hour".tr,
+                                                        //               textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+                                                        //               style: GoogleFonts.tajawal(
+                                                        //                 fontWeight: FontWeight.w700,
+                                                        //                 fontStyle: FontStyle.normal,
+                                                        //                 fontSize: 16.spm(context),
+                                                        //                 color: ColorUtils.black33,
+                                                        //               ),
+                                                        //             ),
+                                                        //           ),
+                                                        //         ),
+                                                        //       ],
+                                                        //     ),
+                                                        //   ),
+                                                        // ),
 
                                                         SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
 
@@ -1985,105 +1992,103 @@ class ProfileScreenWidget extends GetxController {
                                                           height: 162.hm(context),
                                                           width: 358.wm(context),
                                                           decoration: BoxDecoration(
-                                                              color: Colors.transparent
+                                                            color: Colors.transparent,
                                                           ),
                                                           child: Stack(
                                                             fit: StackFit.expand,
                                                             children: [
-
                                                               SizedBox(
                                                                 height: 162.hm(context),
                                                                 width: 358.wm(context),
                                                               ),
 
-
+                                                              // Image Container
                                                               Container(
-                                                                  height: 162.hm(context),
-                                                                  width: 358.wm(context),
-                                                                  decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(10.rm(context)),
-                                                                    color: ColorUtils.white217,
-                                                                  ),
-                                                                  child: FittedBox(
-                                                                    fit: BoxFit.fill,
-                                                                    child: Image.asset(
-                                                                      ImagePathUtils.restaurantOneImage,
-                                                                      fit: BoxFit.cover,
+                                                                height: 162.hm(context),
+                                                                width: 358.wm(context),
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(10.rm(context)),
+                                                                  color: ColorUtils.white217,
+                                                                ),
+                                                                child: Obx(() => profileController.selectedImage.value == null
+                                                                    ? Image.asset(
+                                                                  ImagePathUtils.restaurantOneImage,
+                                                                  fit: BoxFit.fill,
+                                                                )
+                                                                    : Image.file(
+                                                                  profileController.selectedImage.value!,
+                                                                  fit: BoxFit.fill,
+                                                                )),
+                                                              ),
+
+                                                              // Buttons Container
+                                                              Container(
+                                                                height: 162.hm(context),
+                                                                width: 358.wm(context),
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(10.rm(context)),
+                                                                  color: Colors.transparent,
+                                                                ),
+                                                                padding: EdgeInsets.symmetric(
+                                                                  vertical: 30.vpmm(context),
+                                                                  horizontal: 10.hpmm(context),
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        // Add Image Button
+                                                                        Container(
+                                                                          height: 24.hm(context),
+                                                                          width: 24.wm(context),
+                                                                          decoration: BoxDecoration(
+                                                                            color: Colors.transparent,
+                                                                          ),
+                                                                          child: TextButton(
+                                                                            style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                                                                            onPressed: () => profileController.pickImage(), // Trigger image picker
+                                                                            child: FittedBox(
+                                                                              fit: BoxFit.fill,
+                                                                              child: Image.asset(
+                                                                                ImagePathUtils.plusIconImagePath,
+                                                                                fit: BoxFit.fill,
+                                                                                alignment: Alignment.center,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+
+                                                                        SizedBox(width: 4.wm(context)), // Replaced SpacerWidget
+
+                                                                        // Delete Image Button
+                                                                        Container(
+                                                                          height: 24.hm(context),
+                                                                          width: 24.wm(context),
+                                                                          decoration: BoxDecoration(
+                                                                            color: Colors.transparent,
+                                                                          ),
+                                                                          child: TextButton(
+                                                                            style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                                                                            onPressed: () {
+                                                                              profileController.selectedImage.value = null; // Clear selected image
+                                                                            },
+                                                                            child: FittedBox(
+                                                                              fit: BoxFit.fill,
+                                                                              child: Image.asset(
+                                                                                ImagePathUtils.deleteCircleIconImagePath,
+                                                                                fit: BoxFit.fill,
+                                                                                alignment: Alignment.center,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
                                                                     ),
-                                                                  )
+                                                                  ],
+                                                                ),
                                                               ),
-
-                                                              Container(
-                                                                  height: 162.hm(context),
-                                                                  width: 358.wm(context),
-                                                                  decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(10.rm(context)),
-                                                                    color: Colors.transparent,
-                                                                  ),
-                                                                  padding: EdgeInsets.symmetric(vertical: 30.vpmm(context),horizontal: 10.hpmm(context)),
-                                                                  child: Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.end,
-                                                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                                                    children: [
-
-
-                                                                      Row(
-                                                                        children: [
-
-
-                                                                          Container(
-                                                                            height: 24.hm(context),
-                                                                            width: 24.wm(context),
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.transparent,
-                                                                            ),
-                                                                            child: TextButton(
-                                                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                                              onPressed: () {},
-                                                                              child: FittedBox(
-                                                                                fit: BoxFit.cover,
-                                                                                child: Image.asset(
-                                                                                  ImagePathUtils.plusIconImagePath,
-                                                                                  fit: BoxFit.cover,
-                                                                                  alignment: Alignment.center,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-
-                                                                          SpacerWidget.spacerWidget(spaceWidth: 4.wm(context)),
-
-
-                                                                          Container(
-                                                                            height: 24.hm(context),
-                                                                            width: 24.wm(context),
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.transparent,
-                                                                            ),
-                                                                            child: TextButton(
-                                                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                                              onPressed: () {},
-                                                                              child: FittedBox(
-                                                                                fit: BoxFit.cover,
-                                                                                child: Image.asset(
-                                                                                  ImagePathUtils.deleteCircleIconImagePath,
-                                                                                  fit: BoxFit.cover,
-                                                                                  alignment: Alignment.center,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-
-
-                                                                        ],
-                                                                      ),
-
-
-                                                                    ],
-                                                                  )
-                                                              ),
-
-
                                                             ],
                                                           ),
                                                         ),
@@ -2221,7 +2226,7 @@ class ProfileScreenWidget extends GetxController {
                             ),
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
-                              hintText: "Shawarma, Fries, Burger".tr,
+                              hintText: "Shawarma".tr,
                               hintStyle: GoogleFonts.tajawal(
                                 fontSize: 16.spm(context),
                                 fontWeight: FontWeight.w400,
@@ -2229,7 +2234,7 @@ class ProfileScreenWidget extends GetxController {
                                 color: ColorUtils.gray136,
                               ),
                               filled: true,
-                              enabled: true,
+                              enabled: false,
                               fillColor: ColorUtils.white243,
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12.hpmm(context),
@@ -2290,7 +2295,7 @@ class ProfileScreenWidget extends GetxController {
                             ),
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
-                              hintText: "From 04:00 PM to 11:00 PM".tr,
+                              hintText: "From ${ "${profileController.profile.value.data?.store?.workingHours[0].from}"} to ${ "${profileController.profile.value.data?.store?.workingHours[0].to}"}".tr,
                               hintStyle: GoogleFonts.tajawal(
                                 fontSize: 16.spm(context),
                                 fontWeight: FontWeight.w400,
@@ -2298,7 +2303,7 @@ class ProfileScreenWidget extends GetxController {
                                 color: ColorUtils.gray136,
                               ),
                               filled: true,
-                              enabled: true,
+                              enabled: false,
                               fillColor: ColorUtils.white243,
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 12.hpmm(context),
