@@ -33,50 +33,37 @@ class ProductController extends GetxController {
   }
 
   Future<void> getProducts() async {
-    int attempts = 0;
-    const int retryCount = 3;
-    while (attempts < retryCount) {
-      try {
-        isLoading(true);
-        print("🟡 Attempt ${attempts + 1}: Fetching products");
+    try {
+      isLoading(true);
+      Map<String, String> headers = {
+        'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
+        'Content-Type': 'application/json',
+      };
+      debugPrint('API: ${Api.allProduct(storeID: "${LocalStorage.getData(key: AppConstant.storeId)}")}');
 
-        Map<String, String> headers = {
-          'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
-          'Content-Type': 'application/json',
-        };
+      dynamic responseBody = await BaseClient.handleResponse(
+        await BaseClient.getRequest(
+          api: Api.allProduct(storeID: "${LocalStorage.getData(key: AppConstant.storeId)}"),
+          headers: headers,
+        ),
+      );
 
-        dynamic responseBody = await BaseClient.handleResponse(
-          await BaseClient.getRequest(
-            api: Api.allProduct(storeID: "${LocalStorage.getData(key: AppConstant.storeId)}"),
-            headers: headers,
-          ),
-        );
-
-        if (responseBody != null) {
-          ProductModel productModel = ProductModel.fromJson(responseBody);
-          if (productModel.success == true && productModel.data != null) {
-            products.assignAll(productModel.data!.data);
-            totalProducts.value = productModel.data!.meta?.total ?? 0;
-            print("✅ Fetched ${products.length} products");
-            return;
-          } else {
-            throw productModel.message ?? 'Failed to fetch products!';
-          }
+      if (responseBody != null) {
+        ProductModel productModel = ProductModel.fromJson(responseBody);
+        if (productModel.success == true && productModel.data != null) {
+          products.assignAll(productModel.data!.data);
+          totalProducts.value = productModel.data!.meta?.total ?? 0;
         } else {
-          throw 'Failed to fetch products!';
+          throw productModel.message ?? 'Failed to fetch products!';
         }
-      } catch (e) {
-        attempts++;
-        print("❌ Attempt $attempts failed: $e");
-        if (attempts == retryCount) {
-          kSnackBar(message: e.toString(), bgColor: AppColors.red);
-        } else {
-          print("🔄 Retrying in 2 seconds...");
-          await Future.delayed(const Duration(seconds: 2));
-        }
-      } finally {
-        isLoading(false);
+      } else {
+        throw 'Failed to fetch products!';
       }
+    } catch (e) {
+      debugPrint('Error: $e');
+      kSnackBar(message: e.toString(), bgColor: AppColors.red);
+    } finally {
+      isLoading(false);
     }
   }
 
@@ -87,106 +74,89 @@ class ProductController extends GetxController {
     required String timeRequired,
     required int selectedSize,
   }) async {
-    int attempts = 0;
-    const int retryCount = 3;
-    while (attempts < retryCount) {
-      try {
-        isLoading(true);
-        print("🟡 Attempt ${attempts + 1}: Adding new product");
+    try {
+      isLoading(true);
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(Api.products),
+      );
 
-        var request = http.MultipartRequest(
-          'POST',
-          Uri.parse(Api.products),
-        );
+      request.headers.addAll({
+        'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
+        'Content-Type': 'multipart/form-data',
+      });
+      debugPrint('API: ${Api.products}');
+      debugPrint('Request Body (Data): $name, $description, $price, $timeRequired, $selectedSize');
 
-        // Headers
-        request.headers.addAll({
-          'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
-          'Content-Type': 'multipart/form-data',
-        });
-
-        // Validate inputs
-        double parsedPrice = double.tryParse(price) ?? 0.0;
-        int parsedTime = int.tryParse(timeRequired.split(' ')[0]) ?? 0;
-        if (parsedPrice <= 0 || parsedTime <= 0) {
-          throw 'Invalid price or time required';
-        }
-
-        // Prepare variations based on selected size
-        List<Map<String, dynamic>> variations = [];
-        if (selectedSize >= 0 && selectedSize <= 2) {
-          variations.add({'size': 'small', 'price': parsedPrice});
-          if (selectedSize >= 1) variations.add({'size': 'middle', 'price': parsedPrice * 1.2});
-          if (selectedSize >= 2) variations.add({'size': 'large', 'price': parsedPrice * 1.5});
-        }
-
-        // Data field
-        String jsonData = jsonEncode({
-          'name': name,
-          'category': '682711ceb765318af80f5ecd',
-          'description': description,
-          'variations': variations,
-          'time_required': parsedTime,
-        });
-        request.fields['data'] = jsonData;
-        print("➡️ Data field: $jsonData");
-
-        // Add images
-        for (var image in selectedImages) {
-          if (image.path != null && await File(image.path!).exists()) {
-            var multipartFile = http.MultipartFile(
-              'images',
-              File(image.path!).readAsBytes().asStream(),
-              await File(image.path!).length(),
-              filename: image.name,
-            );
-            request.files.add(multipartFile);
-            print("✅ Added image: ${image.name}");
-          }
-        }
-
-        // Send request
-        var response = await request.send().timeout(const Duration(seconds: 30));
-        var responseBody = await http.Response.fromStream(response);
-        print("✅ Server responded with status: ${response.statusCode}");
-        print("📦 Response body: ${responseBody.body}");
-
-        dynamic jsonResponse = await BaseClient.handleResponse(responseBody);
-        if (jsonResponse != null) {
-
-          String successMessage = jsonResponse['message'] ?? 'Product added successfully!'.tr;
-          print("✅ Success message: $successMessage");
-          kSnackBar(
-            message: successMessage,
-            bgColor: AppColors.green,
-          );
-          selectedImages.clear();
-          mealNameController.value.clear();
-          mealDescriptionController.value.clear();
-          priceController.value.clear();
-          timeRequiredController.value.clear();
-          selectSize.value = 0;
-
-          await getProducts(); // Refresh product list
-          return;
-        } else {
-          throw 'Failed to add product: No response data';
-        }
-      } catch (e) {
-        attempts++;
-        print("❌ Attempt $attempts failed: $e");
-        if (attempts == retryCount) {
-          kSnackBar(
-            message: 'Failed after $retryCount attempts: $e',
-            bgColor: AppColors.red,
-          );
-        } else {
-          print("🔄 Retrying in 2 seconds...");
-          await Future.delayed(const Duration(seconds: 2));
-        }
-      } finally {
-        isLoading(false);
+      double parsedPrice = double.tryParse(price) ?? 0.0;
+      int parsedTime = int.tryParse(timeRequired.split(' ')[0]) ?? 0;
+      if (parsedPrice <= 0 || parsedTime <= 0) {
+        throw 'Invalid price or time required';
       }
+
+      List<Map<String, dynamic>> variations = [];
+      if (selectedSize >= 0 && selectedSize <= 2) {
+        variations.add({'size': 'small', 'price': parsedPrice});
+        if (selectedSize >= 1) variations.add({'size': 'middle', 'price': parsedPrice * 1.2});
+        if (selectedSize >= 2) variations.add({'size': 'large', 'price': parsedPrice * 1.5});
+      }
+
+      String jsonData = jsonEncode({
+        'name': name,
+        'category': '682711ceb765318af80f5ecd',
+        'description': description,
+        'variations': variations,
+        'time_required': parsedTime,
+      });
+      request.fields['data'] = jsonData;
+      debugPrint('Request Body (JSON): $jsonData');
+
+      for (var image in selectedImages) {
+        if (image.path != null && await File(image.path!).exists()) {
+          var file = File(image.path!);
+          var multipartFile = http.MultipartFile(
+            'images',
+            file.readAsBytes().asStream(),
+            await file.length(),
+            filename: image.name,
+          );
+          request.files.add(multipartFile);
+          debugPrint('Request Body (File): ${image.name}, Size: ${await file.length()} bytes');
+        }
+      }
+
+      var response = await request.send().timeout(const Duration(seconds: 60));
+      var responseBody = await http.Response.fromStream(response);
+      debugPrint('Response Status: ${response.statusCode}');
+      debugPrint('Response Body: ${responseBody.body}');
+
+      dynamic jsonResponse = await BaseClient.handleResponse(responseBody);
+      if (jsonResponse != null) {
+        String successMessage = jsonResponse['message'] ?? 'Product added successfully!'.tr;
+        kSnackBar(
+          message: successMessage,
+          bgColor: AppColors.green,
+        );
+        selectedImages.clear();
+        mealNameController.value.clear();
+        mealDescriptionController.value.clear();
+        priceController.value.clear();
+        timeRequiredController.value.clear();
+        selectSize.value = 0;
+        await getProducts();
+      } else {
+        throw 'Failed to add product: No response data';
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      kSnackBar(
+        message: e is TimeoutException
+            ? 'Request timed out. Check your network or server.'
+            : e.toString(),
+        bgColor: AppColors.red,
+      );
+    } finally {
+      isLoading(false);
     }
   }
 
@@ -198,163 +168,130 @@ class ProductController extends GetxController {
     required String timeRequired,
     required int selectedSize,
   }) async {
-    int attempts = 0;
-    const int retryCount = 3;
-    while (attempts < retryCount) {
-      try {
-        isLoading(true);
-        print("🟡 Attempt ${attempts + 1}: Updating product $productId");
+    try {
+      isLoading(true);
+      var request = http.MultipartRequest(
+        'PUT',
+        Uri.parse(Api.productApi(productId: productId)),
+      );
 
-        var request = http.MultipartRequest(
-          'PUT',
-          Uri.parse(Api.productApi(productId: productId)),
-        );
+      request.headers.addAll({
+        'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
+        'Content-Type': 'multipart/form-data',
+      });
+      debugPrint('API: ${Api.productApi(productId: productId)}');
+      debugPrint('Request Body (Data): $name, $description, $price, $timeRequired, $selectedSize');
 
-        // Headers
-        request.headers.addAll({
-          'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
-          'Content-Type': 'multipart/form-data',
-        });
-
-        // Validate inputs
-        double parsedPrice = double.tryParse(price) ?? 0.0;
-        int parsedTime = int.tryParse(timeRequired.split(' ')[0]) ?? 0;
-        if (parsedPrice <= 0 || parsedTime <= 0) {
-          throw 'Invalid price or time required';
-        }
-
-        // Prepare variations based on selected size
-        List<Map<String, dynamic>> variations = [];
-        if (selectedSize >= 0 && selectedSize <= 2) {
-          variations.add({'size': 'small', 'price': parsedPrice});
-          if (selectedSize >= 1) variations.add({'size': 'middle', 'price': parsedPrice * 1.2});
-          if (selectedSize >= 2) variations.add({'size': 'large', 'price': parsedPrice * 1.5});
-        }
-
-        // Data field
-        String jsonData = jsonEncode({
-          'name': name,
-          'category': '682711ceb765318af80f5ecd',
-          'description': description,
-          'variations': variations,
-          'time_required': parsedTime,
-        });
-        request.fields['data'] = jsonData;
-        print("➡️ Data field: $jsonData");
-        print("➡️ Request URL: ${Api.productApi(productId: productId)}"); // Debug URL
-
-        // Add images if any
-        for (var image in selectedImages) {
-          if (image.path != null && await File(image.path!).exists()) {
-            var multipartFile = http.MultipartFile(
-              'images',
-              File(image.path!).readAsBytes().asStream(),
-              await File(image.path!).length(),
-              filename: image.name,
-            );
-            request.files.add(multipartFile);
-            print("✅ Added image: ${image.name}");
-          }
-        }
-
-        // Send request
-        var response = await request.send().timeout(const Duration(seconds: 60)); // Increased timeout to 60 seconds
-        var responseBody = await http.Response.fromStream(response);
-        print("✅ Server responded with status: ${response.statusCode}");
-        print("📦 Response body: ${responseBody.body}");
-
-        dynamic jsonResponse = await BaseClient.handleResponse(responseBody);
-        if (jsonResponse != null) {
-          Get.back();
-          String successMessage = jsonResponse['message'] ?? 'Product updated successfully!'.tr;
-          print("✅ Success message: $successMessage");
-          kSnackBar(
-            message: successMessage,
-            bgColor: AppColors.green,
-          );
-          selectedImages.clear();
-          mealNameController.value.clear();
-          mealDescriptionController.value.clear();
-          priceController.value.clear();
-          timeRequiredController.value.clear();
-          selectSize.value = 0;
-
-          await getProducts(); // Refresh product list
-          return;
-        } else {
-          throw 'Failed to update product: No response data';
-        }
-      } catch (e) {
-        attempts++;
-        print("❌ Attempt $attempts failed: $e");
-        if (attempts == retryCount) {
-          kSnackBar(
-            message: e is TimeoutException
-                ? 'Request timed out after $retryCount attempts. Check your network or server.'
-                : 'Failed after $retryCount attempts: $e',
-            bgColor: AppColors.red,
-          );
-        } else {
-          print("🔄 Retrying in 2 seconds...");
-          await Future.delayed(const Duration(seconds: 2));
-        }
-      } finally {
-        isLoading(false);
+      double parsedPrice = double.tryParse(price) ?? 0.0;
+      int parsedTime = int.tryParse(timeRequired.split(' ')[0]) ?? 0;
+      if (parsedPrice <= 0 || parsedTime <= 0) {
+        throw 'Invalid price or time required';
       }
+
+      List<Map<String, dynamic>> variations = [];
+      if (selectedSize >= 0 && selectedSize <= 2) {
+        variations.add({'size': 'small', 'price': parsedPrice});
+        if (selectedSize >= 1) variations.add({'size': 'middle', 'price': parsedPrice * 1.2});
+        if (selectedSize >= 2) variations.add({'size': 'large', 'price': parsedPrice * 1.5});
+      }
+
+      String jsonData = jsonEncode({
+        'name': name,
+        'category': '682711ceb765318af80f5ecd',
+        'description': description,
+        'variations': variations,
+        'time_required': parsedTime,
+      });
+      request.fields['data'] = jsonData;
+      debugPrint('Request Body (JSON): $jsonData');
+
+      for (var image in selectedImages) {
+        if (image.path != null && await File(image.path!).exists()) {
+          var file = File(image.path!);
+          var multipartFile = http.MultipartFile(
+            'images',
+            file.readAsBytes().asStream(),
+            await file.length(),
+            filename: image.name,
+          );
+          request.files.add(multipartFile);
+          debugPrint('Request Body (File): ${image.name}, Size: ${await file.length()} bytes');
+        }
+      }
+
+      var response = await request.send().timeout(const Duration(seconds: 60));
+      var responseBody = await http.Response.fromStream(response);
+      debugPrint('Response Status: ${response.statusCode}');
+      debugPrint('Response Body: ${responseBody.body}');
+
+      dynamic jsonResponse = await BaseClient.handleResponse(responseBody);
+      if (jsonResponse != null) {
+        Get.back();
+        String successMessage = jsonResponse['message'] ?? 'Product updated successfully!'.tr;
+        kSnackBar(
+          message: successMessage,
+          bgColor: AppColors.green,
+        );
+        selectedImages.clear();
+        mealNameController.value.clear();
+        mealDescriptionController.value.clear();
+        priceController.value.clear();
+        timeRequiredController.value.clear();
+        selectSize.value = 0;
+        await getProducts();
+      } else {
+        throw 'Failed to update product: No response data';
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      kSnackBar(
+        message: e is TimeoutException
+            ? 'Request timed out. Check your network or server.'
+            : e.toString(),
+        bgColor: AppColors.red,
+      );
+    } finally {
+      isLoading(false);
     }
   }
 
   Future<void> deleteProduct(String productId) async {
-    int attempts = 0;
-    const int retryCount = 3;
-    while (attempts < retryCount) {
-      try {
-        isLoading(true);
-        print("🟡 Attempt ${attempts + 1}: Deleting product $productId");
+    try {
+      isLoading(true);
+      Map<String, String> headers = {
+        'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
+        'Content-Type': 'application/json',
+      };
+      debugPrint('API: ${Api.productApi(productId: productId)}');
 
-        Map<String, String> headers = {
-          'Authorization': "Bearer ${LocalStorage.getData(key: AppConstant.token)}",
-          'Content-Type': 'application/json',
-        };
+      dynamic responseBody = await BaseClient.handleResponse(
+        await BaseClient.deleteRequest(
+          api: Api.productApi(productId: productId),
+        //  headers: headers,
+        ),
+      );
 
-        dynamic responseBody = await BaseClient.handleResponse(
-          await BaseClient.deleteRequest(
-            api: Api.productApi(productId: productId),
-
-          ),
+      if (responseBody != null) {
+        Get.back();
+        String successMessage = responseBody['message'] ?? 'Product deleted successfully!'.tr;
+        kSnackBar(
+          message: successMessage,
+          bgColor: AppColors.green,
         );
-
-        if (responseBody != null) {
-          Get.back();
-          String successMessage = responseBody['message'] ?? 'Product deleted successfully!'.tr;
-          print("✅ Success message: $successMessage");
-          kSnackBar(
-            message: successMessage,
-            bgColor: AppColors.green,
-          );
-
-          await getProducts(); // Refresh product list
-          return;
-        } else {
-          throw 'Failed to delete product: No response data';
-        }
-      } catch (e) {
-        attempts++;
-        print("❌ Attempt $attempts failed: $e");
-        if (attempts == retryCount) {
-          kSnackBar(
-            message: e is TimeoutException
-                ? 'Request timed out after $retryCount attempts. Check your network or server.'
-                : 'Failed after $retryCount attempts: $e',
-            bgColor: AppColors.red,
-          );
-        } else {
-          print("🔄 Retrying in 2 seconds...");
-          await Future.delayed(const Duration(seconds: 2));
-        }
-      } finally {
-        isLoading(false);
+        await getProducts();
+      } else {
+        throw 'Failed to delete product: No response data';
       }
+    } catch (e) {
+      debugPrint('Error: $e');
+      kSnackBar(
+        message: e is TimeoutException
+            ? 'Request timed out. Check your network or server.'
+            : e.toString(),
+        bgColor: AppColors.red,
+      );
+    } finally {
+      isLoading(false);
     }
   }
 }
