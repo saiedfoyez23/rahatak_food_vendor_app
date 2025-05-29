@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:rahatak_food_vendor_app/data/api.dart';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
 import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
@@ -28,7 +29,7 @@ class CategoryController extends GetxController {
 
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.getRequest(
-          api: 'http://192.168.10.43:5010/api/v1/categories',
+          api: Api.categories,
           headers: headers,
         ),
       );

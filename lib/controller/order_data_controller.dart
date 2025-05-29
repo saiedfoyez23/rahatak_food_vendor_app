@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:rahatak_food_vendor_app/data/api.dart';
 import 'dart:convert';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
@@ -35,7 +36,7 @@ class OrderDataController extends GetxController {
 
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.getRequest(
-          api: 'http://192.168.10.43:5010/api/v1/orders/vendor',
+          api: Api.vendorOrder,
           headers: headers,
         ),
       );
@@ -99,7 +100,7 @@ class OrderDataController extends GetxController {
 
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.patchRequest(
-          api: 'http://192.168.10.43:5010/api/v1/orders/$orderId',
+          api: Api.orderStatue(orderId: orderId),
           headers: headers,
           body: jsonEncode(body),
         ),

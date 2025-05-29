@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:rahatak_food_vendor_app/data/api.dart';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
 import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
@@ -25,7 +26,7 @@ class SupportController extends GetxController {
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.10.43:5010/api/v1/supports'),
+        Uri.parse(Api.supports),
       );
 
       // Headers

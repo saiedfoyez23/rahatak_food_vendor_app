@@ -1,8 +1,8 @@
 class ProductModel {
   ProductModel({
-     this.success,
-     this.message,
-     this.data,
+    required this.success,
+    required this.message,
+    required this.data,
   });
 
   final bool? success;
@@ -98,12 +98,57 @@ class Store {
   });
 
   final String? id;
-  final List<dynamic> locations;
+  final List<LocationElement> locations;
 
   factory Store.fromJson(Map<String, dynamic> json){
     return Store(
       id: json["_id"],
-      locations: json["locations"] == null ? [] : List<dynamic>.from(json["locations"]!.map((x) => x)),
+      locations: json["locations"] == null ? [] : List<LocationElement>.from(json["locations"]!.map((x) => LocationElement.fromJson(x))),
+    );
+  }
+
+}
+
+class LocationElement {
+  LocationElement({
+    required this.location,
+    required this.governorate,
+    required this.state,
+    required this.locationLink,
+    required this.id,
+  });
+
+  final LocationLocation? location;
+  final String? governorate;
+  final String? state;
+  final String? locationLink;
+  final String? id;
+
+  factory LocationElement.fromJson(Map<String, dynamic> json){
+    return LocationElement(
+      location: json["location"] == null ? null : LocationLocation.fromJson(json["location"]),
+      governorate: json["governorate"],
+      state: json["state"],
+      locationLink: json["location_link"],
+      id: json["_id"],
+    );
+  }
+
+}
+
+class LocationLocation {
+  LocationLocation({
+    required this.type,
+    required this.coordinates,
+  });
+
+  final String? type;
+  final List<double> coordinates;
+
+  factory LocationLocation.fromJson(Map<String, dynamic> json){
+    return LocationLocation(
+      type: json["type"],
+      coordinates: json["coordinates"] == null ? [] : List<double>.from(json["coordinates"]!.map((x) => x)),
     );
   }
 
@@ -117,7 +162,7 @@ class Variation {
   });
 
   final String? size;
-  final double? price;
+  final dynamic price;
   final String? id;
 
   factory Variation.fromJson(Map<String, dynamic> json){

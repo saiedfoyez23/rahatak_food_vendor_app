@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rahatak_food_vendor_app/data/api.dart';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
 import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
@@ -29,7 +30,7 @@ class ChangePasswordController extends GetxController {
 
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.postRequest(
-          api: 'http://192.168.10.43:5010/api/v1/auth/change-password',
+          api: Api.changePassword,
           body: jsonEncode(map),
           headers: headers,
         ),
