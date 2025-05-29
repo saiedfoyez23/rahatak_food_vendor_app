@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rahatak_food_vendor_app/controller/category_controller.dart';
 import 'package:rahatak_food_vendor_app/utils/utils.dart';
 import 'package:rahatak_food_vendor_app/widget/custom_snackbar.dart';
 import 'package:rahatak_food_vendor_app/widget/widget.dart';
@@ -12,6 +13,7 @@ import '../utils/app_text_style/styles.dart';
 
 class MenuScreenWidget extends GetxController {
   final ProductController productController = Get.put(ProductController());
+  final CategoryController categoryController = Get.put(CategoryController());
 
   Widget menuScreenWidget({required BuildContext context}) {
     return SafeArea(
@@ -339,7 +341,8 @@ class ProductListWidget extends StatelessWidget {
 class AddProductDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductController>();
+    final ProductController productController = Get.find<ProductController>();
+    final CategoryController categoryController = Get.find<CategoryController>();
 
     return Obx(() => Padding(
       padding: EdgeInsets.symmetric(
@@ -348,7 +351,7 @@ class AddProductDialog extends StatelessWidget {
       ),
       child: Container(
         width: 358.wm(context),
-        height: 550.hm(context),
+        height: 600.hm(context), // Increased height to accommodate category dropdown
         decoration: BoxDecoration(
           color: ColorUtils.white255,
           borderRadius: BorderRadius.circular(16.rm(context)),
@@ -410,7 +413,7 @@ class AddProductDialog extends StatelessWidget {
                                   child: TextButton(
                                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
                                     onPressed: () {
-                                      controller.selectedImages.clear();
+                                      productController.selectedImages.clear();
                                     },
                                     child: FittedBox(
                                       fit: BoxFit.cover,
@@ -451,11 +454,19 @@ class AddProductDialog extends StatelessWidget {
                                   onPressed: () async {
                                     FilePickerResult? result = await FilePicker.platform.pickFiles(
                                       type: FileType.image,
-                                     // allowedExtensions: ['jpg', 'jpeg', 'png', 'svg'],
+                                      allowMultiple: true,
                                     );
                                     if (result != null) {
-                                      controller.selectedImages.assignAll(result.files);
-                                      print('Files selected: ${result.files.map((f) => f.name)}');
+                                      if (result.files.length > 3) {
+                                        kSnackBar(
+                                          message: 'You can only select up to 3 images.'.tr,
+                                          bgColor: AppColors.red,
+                                        );
+                                        productController.selectedImages.assignAll(result.files.take(3).toList());
+                                      } else {
+                                        productController.selectedImages.assignAll(result.files);
+                                      }
+                                      print('Files selected: ${result.files.map((f) => f.name).toList()}');
                                     }
                                   },
                                   child: Center(
@@ -465,8 +476,8 @@ class AddProductDialog extends StatelessWidget {
                               );
                             } else {
                               return Obx(() {
-                                final image = controller.selectedImages.length > index - 1
-                                    ? controller.selectedImages[index - 1]
+                                final image = productController.selectedImages.length > index - 1
+                                    ? productController.selectedImages[index - 1]
                                     : null;
                                 return Container(
                                   height: 60.hm(context),
@@ -609,6 +620,65 @@ class AddProductDialog extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
+                    Container(
+                      width: 358.wm(context),
+                      alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+                      child: Text(
+                        "Category *".tr,
+                        textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+                        style: GoogleFonts.tajawal(
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 16.spm(context),
+                          color: ColorUtils.black33,
+                        ),
+                      ),
+                    ),
+                    SpacerWidget.spacerWidget(spaceHeight: 12.hm(context)),
+                    Obx(() => Container(
+                      width: 358.wm(context),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: ColorUtils.gray163, width: 1),
+                        borderRadius: BorderRadius.circular(8.rm(context)),
+                        color: ColorUtils.white255,
+                      ),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: const SizedBox(),
+                        hint: Text(
+                          "Select Category".tr,
+                          style: GoogleFonts.tajawal(
+                            fontSize: 16.spm(context),
+                            fontWeight: FontWeight.w400,
+                            color: ColorUtils.gray136,
+                          ),
+                        ),
+                        value: productController.selectedCategoryId.value.isEmpty
+                            ? null
+                            : productController.selectedCategoryId.value,
+                        items: categoryController.categoryNames.map((String name) {
+                          final category = categoryController.categories
+                              .firstWhere((cat) => cat.name == name);
+                          return DropdownMenuItem<String>(
+                            value: category.id,
+                            child: Text(
+                              name,
+                              style: GoogleFonts.tajawal(
+                                fontSize: 16.spm(context),
+                                fontWeight: FontWeight.w400,
+                                color: ColorUtils.black51,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            productController.selectedCategoryId.value = newValue;
+                          }
+                        },
+                      ),
+                    )),
                     SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
                     Container(
                       width: 358.wm(context),
@@ -811,13 +881,14 @@ class AddProductDialog extends StatelessWidget {
                           ),
                           child: Obx(() => TextButton(
                             style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: controller.isLoading.value
+                            onPressed: productController.isLoading.value
                                 ? null
                                 : () async {
                               if (ProductController.mealNameController.value.text.isEmpty ||
                                   ProductController.mealDescriptionController.value.text.isEmpty ||
                                   ProductController.priceController.value.text.isEmpty ||
-                                  ProductController.timeRequiredController.value.text.isEmpty) {
+                                  ProductController.timeRequiredController.value.text.isEmpty ||
+                                  productController.selectedCategoryId.value.isEmpty) {
                                 kSnackBar(
                                   message: 'Please fill all required fields.'.tr,
                                   bgColor: AppColors.red,
@@ -840,16 +911,17 @@ class AddProductDialog extends StatelessWidget {
                                 );
                                 return;
                               }
-                              await controller.addProduct(
+                              await productController.addProduct(
                                 name: ProductController.mealNameController.value.text,
                                 description: ProductController.mealDescriptionController.value.text,
                                 price: ProductController.priceController.value.text,
                                 timeRequired: ProductController.timeRequiredController.value.text,
                                 selectedSize: ProductController.selectSize.value,
+                                categoryId: productController.selectedCategoryId.value,
                               );
                             },
                             child: Center(
-                              child: controller.isLoading.value
+                              child: productController.isLoading.value
                                   ? const CircularProgressIndicator(
                                 color: ColorUtils.white255,
                                 strokeWidth: 2.0,
@@ -878,7 +950,7 @@ class AddProductDialog extends StatelessWidget {
                           ),
                           child: TextButton(
                             style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: controller.isLoading.value ? null : () => Get.back(),
+                            onPressed: productController.isLoading.value ? null : () => Get.back(),
                             child: Center(
                               child: Text(
                                 "Cancel".tr,
@@ -913,8 +985,9 @@ class EditProductDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductController>();
-    final product = controller.products[index];
+    final ProductController productController = Get.find<ProductController>();
+    final CategoryController categoryController = Get.find<CategoryController>();
+    final product = productController.products[index];
 
     // Initialize controllers with existing product data
     ProductController.mealNameController.value.text = product.name ?? '';
@@ -922,7 +995,9 @@ class EditProductDialog extends StatelessWidget {
     ProductController.priceController.value.text = product.variations.isNotEmpty ? product.variations[0].price.toString() : '0.0';
     ProductController.timeRequiredController.value.text = '${product.timeRequired ?? 0} minutes';
     ProductController.selectSize.value = product.variations.length - 1; // Infer size based on variations count
-    controller.selectedImages.clear(); // Clear any previously selected images
+    productController.selectedImages.clear(); // Clear any previously selected images
+    // Set the initial category ID if it exists in the product
+    productController.selectedCategoryId.value = product.category ?? '';
 
     return Obx(() => Padding(
       padding: EdgeInsets.symmetric(
@@ -931,7 +1006,7 @@ class EditProductDialog extends StatelessWidget {
       ),
       child: Container(
         width: 358.wm(context),
-        height: 550.hm(context),
+        height: 600.hm(context), // Increased height to accommodate category dropdown
         decoration: BoxDecoration(
           color: ColorUtils.white255,
           borderRadius: BorderRadius.circular(16.rm(context)),
@@ -1003,7 +1078,7 @@ class EditProductDialog extends StatelessWidget {
                                   child: TextButton(
                                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
                                     onPressed: () {
-                                      controller.selectedImages.clear();
+                                      productController.selectedImages.clear();
                                     },
                                     child: FittedBox(
                                       fit: BoxFit.cover,
@@ -1044,11 +1119,19 @@ class EditProductDialog extends StatelessWidget {
                                   onPressed: () async {
                                     FilePickerResult? result = await FilePicker.platform.pickFiles(
                                       type: FileType.image,
-                                     // allowedExtensions: ['jpg', 'jpeg', 'png', 'svg'],
+                                      allowMultiple: true,
                                     );
                                     if (result != null) {
-                                      controller.selectedImages.assignAll(result.files);
-                                      print('Files selected: ${result.files.map((f) => f.name)}');
+                                      if (result.files.length > 3) {
+                                        kSnackBar(
+                                          message: 'You can only select up to 3 images.'.tr,
+                                          bgColor: AppColors.red,
+                                        );
+                                        productController.selectedImages.assignAll(result.files.take(3).toList());
+                                      } else {
+                                        productController.selectedImages.assignAll(result.files);
+                                      }
+                                      print('Files selected: ${result.files.map((f) => f.name).toList()}');
                                     }
                                   },
                                   child: Center(
@@ -1058,8 +1141,8 @@ class EditProductDialog extends StatelessWidget {
                               );
                             } else {
                               return Obx(() {
-                                final image = controller.selectedImages.length > index - 1
-                                    ? controller.selectedImages[index - 1]
+                                final image = productController.selectedImages.length > index - 1
+                                    ? productController.selectedImages[index - 1]
                                     : null;
                                 return Container(
                                   height: 60.hm(context),
@@ -1202,6 +1285,65 @@ class EditProductDialog extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
+                    Container(
+                      width: 358.wm(context),
+                      alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+                      child: Text(
+                        "Category *".tr,
+                        textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+                        style: GoogleFonts.tajawal(
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 16.spm(context),
+                          color: ColorUtils.black33,
+                        ),
+                      ),
+                    ),
+                    SpacerWidget.spacerWidget(spaceHeight: 12.hm(context)),
+                    Obx(() => Container(
+                      width: 358.wm(context),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: ColorUtils.gray163, width: 1),
+                        borderRadius: BorderRadius.circular(8.rm(context)),
+                        color: ColorUtils.white255,
+                      ),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: const SizedBox(),
+                        hint: Text(
+                          "Select Category".tr,
+                          style: GoogleFonts.tajawal(
+                            fontSize: 16.spm(context),
+                            fontWeight: FontWeight.w400,
+                            color: ColorUtils.gray136,
+                          ),
+                        ),
+                        value: productController.selectedCategoryId.value.isEmpty
+                            ? null
+                            : productController.selectedCategoryId.value,
+                        items: categoryController.categoryNames.map((String name) {
+                          final category = categoryController.categories
+                              .firstWhere((cat) => cat.name == name);
+                          return DropdownMenuItem<String>(
+                            value: category.id,
+                            child: Text(
+                              name,
+                              style: GoogleFonts.tajawal(
+                                fontSize: 16.spm(context),
+                                fontWeight: FontWeight.w400,
+                                color: ColorUtils.black51,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            productController.selectedCategoryId.value = newValue;
+                          }
+                        },
+                      ),
+                    )),
                     SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
                     Container(
                       width: 358.wm(context),
@@ -1404,13 +1546,14 @@ class EditProductDialog extends StatelessWidget {
                           ),
                           child: Obx(() => TextButton(
                             style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: controller.isLoading.value
+                            onPressed: productController.isLoading.value
                                 ? null
                                 : () async {
                               if (ProductController.mealNameController.value.text.isEmpty ||
                                   ProductController.mealDescriptionController.value.text.isEmpty ||
                                   ProductController.priceController.value.text.isEmpty ||
-                                  ProductController.timeRequiredController.value.text.isEmpty) {
+                                  ProductController.timeRequiredController.value.text.isEmpty ||
+                                  productController.selectedCategoryId.value.isEmpty) {
                                 kSnackBar(
                                   message: 'Please fill all required fields.'.tr,
                                   bgColor: AppColors.red,
@@ -1433,17 +1576,18 @@ class EditProductDialog extends StatelessWidget {
                                 );
                                 return;
                               }
-                              await controller.updateProduct(
+                              await productController.updateProduct(
                                 productId: product.id!,
                                 name: ProductController.mealNameController.value.text,
                                 description: ProductController.mealDescriptionController.value.text,
                                 price: ProductController.priceController.value.text,
                                 timeRequired: ProductController.timeRequiredController.value.text,
                                 selectedSize: ProductController.selectSize.value,
+                                categoryId: productController.selectedCategoryId.value,
                               );
                             },
                             child: Center(
-                              child: controller.isLoading.value
+                              child: productController.isLoading.value
                                   ? const CircularProgressIndicator(
                                 color: ColorUtils.white255,
                                 strokeWidth: 2.0,
@@ -1472,7 +1616,7 @@ class EditProductDialog extends StatelessWidget {
                           ),
                           child: TextButton(
                             style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: controller.isLoading.value ? null : () => Get.back(),
+                            onPressed: productController.isLoading.value ? null : () => Get.back(),
                             child: Center(
                               child: Text(
                                 "Cancel".tr,
@@ -1507,8 +1651,8 @@ class DeleteProductDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductController>();
-    final product = controller.products[index];
+    final ProductController productController = Get.find<ProductController>();
+    final product = productController.products[index];
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -1588,13 +1732,13 @@ class DeleteProductDialog extends StatelessWidget {
                     ),
                     child: Obx(() => TextButton(
                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      onPressed: controller.isLoading.value
+                      onPressed: productController.isLoading.value
                           ? null
                           : () async {
-                        await controller.deleteProduct(product.id!);
+                        await productController.deleteProduct(product.id!);
                       },
                       child: Center(
-                        child: controller.isLoading.value
+                        child: productController.isLoading.value
                             ? const CircularProgressIndicator(
                           color: ColorUtils.white255,
                           strokeWidth: 2.0,
@@ -1623,7 +1767,7 @@ class DeleteProductDialog extends StatelessWidget {
                     ),
                     child: TextButton(
                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      onPressed: controller.isLoading.value ? null : () => Get.back(),
+                      onPressed: productController.isLoading.value ? null : () => Get.back(),
                       child: Center(
                         child: Text(
                           "Cancel".tr,

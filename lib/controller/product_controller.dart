@@ -16,6 +16,7 @@ import '../model/product_model.dart';
 class ProductController extends GetxController {
   var isLoading = false.obs;
   var products = <ProductData>[].obs;
+  var selectedCategoryId = ''.obs;
   var totalProducts = 0.obs;
   RxList<PlatformFile> selectedImages = <PlatformFile>[].obs;
 
@@ -69,6 +70,7 @@ class ProductController extends GetxController {
 
   Future<void> addProduct({
     required String name,
+    required String categoryId,
     required String description,
     required String price,
     required String timeRequired,
@@ -103,7 +105,7 @@ class ProductController extends GetxController {
 
       String jsonData = jsonEncode({
         'name': name,
-        'category': '682711ceb765318af80f5ecd',
+        'category': categoryId,
         'description': description,
         'variations': variations,
         'time_required': parsedTime,
@@ -132,6 +134,7 @@ class ProductController extends GetxController {
 
       dynamic jsonResponse = await BaseClient.handleResponse(responseBody);
       if (jsonResponse != null) {
+        Get.back();
         String successMessage = jsonResponse['message'] ?? 'Product added successfully!'.tr;
         kSnackBar(
           message: successMessage,
@@ -162,6 +165,7 @@ class ProductController extends GetxController {
 
   Future<void> updateProduct({
     required String productId,
+    required String categoryId,
     required String name,
     required String description,
     required String price,
@@ -197,7 +201,7 @@ class ProductController extends GetxController {
 
       String jsonData = jsonEncode({
         'name': name,
-        'category': '682711ceb765318af80f5ecd',
+        'category': categoryId,
         'description': description,
         'variations': variations,
         'time_required': parsedTime,
