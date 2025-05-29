@@ -5,6 +5,7 @@ import 'package:rahatak_food_vendor_app/controller/product_controller.dart';
 import 'package:rahatak_food_vendor_app/controller/profile_controller.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
 import 'package:rahatak_food_vendor_app/utils/utils.dart';
+import 'package:rahatak_food_vendor_app/widget/image_upload_screen.dart';
 
 import '../screen/screen.dart';
 import '../utils/app_text_style/styles.dart';
@@ -74,7 +75,8 @@ class HomeScreenWidget extends GetxController {
                               child: TextButton(
                                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                                 onPressed: () {
-                                  Get.off(()=>NotificationScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                                  Get.to(() => ImageUploadPage());
+                                //  Get.off(()=>NotificationScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                                 },
                                 child: FittedBox(
                                   fit: BoxFit.cover,

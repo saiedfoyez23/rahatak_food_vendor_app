@@ -42,21 +42,21 @@ class SupportController extends GetxController {
       request.fields['data'] = jsonData;
       print("➡️ Field [data]: $jsonData");
 
-    //  File
-      if (await image.exists()) {
-        final fileLength = await image.length();
-        print("➡️ Image file size: $fileLength bytes");
-        var multipartFile = http.MultipartFile(
-          'image',
-          image.readAsBytes().asStream(),
-          fileLength,
-          filename: image.path.split('/').last,
-        );
-        request.files.add(multipartFile);
-        print("✅ Image file added to request");
-      } else {
-        print("❌ Image file does not exist");
-      }
+      // File
+      // if (await image.exists()) {
+      //   final fileLength = await image.length();
+      //   print("➡️ Image file size: $fileLength bytes");
+      //   var multipartFile = http.MultipartFile(
+      //     'image',
+      //     image.readAsBytes().asStream(),
+      //     fileLength,
+      //     filename: image.path.split('/').last,
+      //   );
+      //   request.files.add(multipartFile);
+      //   print("✅ Image file added to request");
+      // } else {
+      //   print("❌ Image file does not exist");
+      // }
 
       // Send request
       var response = await request.send().timeout(const Duration(seconds: 30));

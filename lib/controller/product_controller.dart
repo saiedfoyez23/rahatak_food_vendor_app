@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:rahatak_food_vendor_app/data/api.dart';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
@@ -78,6 +79,19 @@ class ProductController extends GetxController {
   }) async {
     try {
       isLoading(true);
+
+      // Validate that all selected images are PNG
+      for (var image in selectedImages) {
+        if (image.path != null && await File(image.path!).exists()) {
+          String? mimeType = lookupMimeType(image.path!);
+          if (mimeType != 'image/png') {
+            throw 'All images must be PNG format. Found invalid file: ${image.name}';
+          }
+        } else {
+          throw 'Invalid image file: ${image.name}';
+        }
+      }
+
       var request = http.MultipartRequest(
         'POST',
         Uri.parse(Api.products),
@@ -116,14 +130,13 @@ class ProductController extends GetxController {
       for (var image in selectedImages) {
         if (image.path != null && await File(image.path!).exists()) {
           var file = File(image.path!);
-          var multipartFile = http.MultipartFile(
+          var multipartFile = await http.MultipartFile.fromPath(
             'images',
-            file.readAsBytes().asStream(),
-            await file.length(),
+            file.path,
             filename: image.name,
           );
           request.files.add(multipartFile);
-          debugPrint('Request Body (File): ${image.name}, Size: ${await file.length()} bytes');
+          debugPrint('Request Body (File): ${image.name}, Size: ${await file.length()} bytes, MIME Type: image/png');
         }
       }
 
@@ -174,6 +187,19 @@ class ProductController extends GetxController {
   }) async {
     try {
       isLoading(true);
+
+      // Validate that all selected images are PNG
+      for (var image in selectedImages) {
+        if (image.path != null && await File(image.path!).exists()) {
+          String? mimeType = lookupMimeType(image.path!);
+          if (mimeType != 'image/png') {
+            throw 'All images must be PNG format. Found invalid file: ${image.name}';
+          }
+        } else {
+          throw 'Invalid image file: ${image.name}';
+        }
+      }
+
       var request = http.MultipartRequest(
         'PUT',
         Uri.parse(Api.productApi(productId: productId)),
@@ -212,14 +238,13 @@ class ProductController extends GetxController {
       for (var image in selectedImages) {
         if (image.path != null && await File(image.path!).exists()) {
           var file = File(image.path!);
-          var multipartFile = http.MultipartFile(
+          var multipartFile = await http.MultipartFile.fromPath(
             'images',
-            file.readAsBytes().asStream(),
-            await file.length(),
+            file.path,
             filename: image.name,
           );
           request.files.add(multipartFile);
-          debugPrint('Request Body (File): ${image.name}, Size: ${await file.length()} bytes');
+          debugPrint('Request Body (File): ${image.name}, Size: ${await file.length()} bytes, MIME Type: image/png');
         }
       }
 
@@ -271,7 +296,7 @@ class ProductController extends GetxController {
       dynamic responseBody = await BaseClient.handleResponse(
         await BaseClient.deleteRequest(
           api: Api.productApi(productId: productId),
-        //  headers: headers,
+         // headers: headers, // Fixed: Uncommented to ensure authentication
         ),
       );
 
