@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rahatak_food_vendor_app/screen/status_dropdown.dart';
-
 import '../controller/order_controller.dart';
+import '../model/order_model.dart';
 import '../utils/utils.dart';
 import 'order_details.dart';
-
+import 'status_dropdown.dart';
 
 class OngoingOrderCard extends StatelessWidget {
   final int index;
-  final String name;
-  final String number;
-  final controller = Get.find<OrderController>();
+  final OrderData order;
+  final OrderController controller = Get.find<OrderController>();
 
-  OngoingOrderCard({
-    super.key,
-    required this.index,
-    required this.name,
-    required this.number,
-  });
+  OngoingOrderCard({super.key, required this.index, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +34,10 @@ class OngoingOrderCard extends StatelessWidget {
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
                 child: Text(
-                  "Order number #123456".tr,
-                  textAlign:
-                  Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+                  'Order #${order.orderId}'.tr,
+                  textAlign: Get.locale.toString() == "en"
+                      ? TextAlign.start
+                      : TextAlign.end,
                   style: GoogleFonts.tajawal(
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
@@ -52,16 +46,19 @@ class OngoingOrderCard extends StatelessWidget {
                   ),
                 ),
               ),
-              StatusDropdown(index: index),
+              StatusDropdown(index: index, order: order),
             ],
           ),
           SpacerWidget.spacerWidget(spaceHeight: 11.hm(context)),
           Container(
-            alignment:
-            Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: Get.locale.toString() == "en"
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
             child: Text(
-              name.tr,
-              textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+              order.customer ?? 'Unknown'.tr,
+              textAlign: Get.locale.toString() == "en"
+                  ? TextAlign.start
+                  : TextAlign.end,
               style: GoogleFonts.tajawal(
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
@@ -72,11 +69,14 @@ class OngoingOrderCard extends StatelessWidget {
           ),
           SpacerWidget.spacerWidget(spaceHeight: 3.hm(context)),
           Container(
-            alignment:
-            Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: Get.locale.toString() == "en"
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
             child: Text(
-              number.tr,
-              textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+              order.deliveryLocation?.phone ?? 'N/A'.tr,
+              textAlign: Get.locale.toString() == "en"
+                  ? TextAlign.start
+                  : TextAlign.end,
               style: GoogleFonts.tajawal(
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
@@ -117,9 +117,8 @@ class OngoingOrderCard extends StatelessWidget {
                   ),
                   SpacerWidget.spacerWidget(spaceWidth: 12.wm(context)),
                   Icon(
-                    (index == 0 && controller.firstOrder.value) ||
-                        (index == 1 && controller.secondOrder.value) ||
-                        (index == 2 && controller.thirdOrder.value)
+                    index < controller.showOrderDetails.length &&
+                        controller.showOrderDetails[index]
                         ? Icons.keyboard_arrow_down_rounded
                         : Icons.keyboard_arrow_up_rounded,
                     size: 25.sm(context),
@@ -129,11 +128,9 @@ class OngoingOrderCard extends StatelessWidget {
               ),
             ),
           )),
-          Obx(() =>
-          (index == 0 && controller.firstOrder.value) ||
-              (index == 1 && controller.secondOrder.value) ||
-              (index == 2 && controller.thirdOrder.value)
-              ? OrderDetails()
+          Obx(() => index < controller.showOrderDetails.length &&
+              controller.showOrderDetails[index]
+              ? OrderDetails(order: order)
               : SpacerWidget.spacerWidget()),
         ],
       ),

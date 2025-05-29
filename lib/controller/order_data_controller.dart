@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'dart:convert';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
 import 'package:rahatak_food_vendor_app/utils/app_constant/app_constant.dart';
@@ -7,7 +8,7 @@ import 'package:rahatak_food_vendor_app/widget/custom_snackbar.dart';
 import '../model/order_model.dart';
 
 class OrderDataController extends GetxController {
-  var isLoading = false.obs;
+  var isLoading = true.obs;
   var allOrders = <OrderData>[].obs;
   var pendingOrders = <OrderData>[].obs;
   var receivedOrders = <OrderData>[].obs;
@@ -28,7 +29,7 @@ class OrderDataController extends GetxController {
       isLoading(true);
 
       Map<String, String> headers = {
-        'Authorization': "${LocalStorage.getData(key: AppConstant.token)}",
+        'Authorization': 'Bearer ${LocalStorage.getData(key: AppConstant.token)}',
         'Content-Type': 'application/json',
       };
 
@@ -75,4 +76,47 @@ class OrderDataController extends GetxController {
       isLoading(false);
     }
   }
+
+  Future<void> acceptOrder(String orderId) async {
+    await updateOrderStatus(orderId, 'received');
+  }
+
+  Future<void> rejectOrder(String orderId) async {
+    await updateOrderStatus(orderId, 'canceled');
+  }
+
+
+  Future<void> updateOrderStatus(String orderId, String status) async {
+    try {
+      isLoading(true);
+
+      Map<String, String> headers = {
+        'Authorization': 'Bearer ${LocalStorage.getData(key: AppConstant.token)}',
+        'Content-Type': 'application/json',
+      };
+
+      Map<String, dynamic> body = {'status': status};
+
+      dynamic responseBody = await BaseClient.handleResponse(
+        await BaseClient.patchRequest(
+          api: 'http://192.168.10.43:5010/api/v1/orders/$orderId',
+          headers: headers,
+          body: jsonEncode(body),
+        ),
+      );
+
+      if (responseBody != null && responseBody['success'] == true) {
+        await getOrders(); // Refresh orders after status update
+        kSnackBar(message: 'Order status updated to $status', bgColor: AppColors.green);
+      } else {
+        throw responseBody['message'] ?? 'Failed to update order status!';
+      }
+    } catch (e) {
+      print("Catch Error: $e");
+      kSnackBar(message: e.toString(), bgColor: AppColors.red);
+    } finally {
+      isLoading(false);
+    }
+  }
+
 }

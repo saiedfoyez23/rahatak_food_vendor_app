@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../controller/order_data_controller.dart';
+import '../model/order_model.dart';
 import '../utils/utils.dart';
 
 class NewOrderCard extends StatelessWidget {
   final int index;
-  final String name;
-  final String number;
+  final OrderData order;
+  final OrderDataController controller = Get.find<OrderDataController>();
 
-  const NewOrderCard({
-    super.key,
-    required this.index,
-    required this.name,
-    required this.number,
-  });
+  NewOrderCard({super.key, required this.index, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +25,14 @@ class NewOrderCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            alignment:
-            Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: Get.locale.toString() == "en"
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
             child: Text(
-              "Order number #123456".tr,
-              textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+              'Order #${order.orderId}'.tr,
+              textAlign: Get.locale.toString() == "en"
+                  ? TextAlign.start
+                  : TextAlign.end,
               style: GoogleFonts.tajawal(
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
@@ -43,11 +43,14 @@ class NewOrderCard extends StatelessWidget {
           ),
           SpacerWidget.spacerWidget(spaceHeight: 11.hm(context)),
           Container(
-            alignment:
-            Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: Get.locale.toString() == "en"
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
             child: Text(
-              name.tr,
-              textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+              order.customer ?? 'Unknown'.tr,
+              textAlign: Get.locale.toString() == "en"
+                  ? TextAlign.start
+                  : TextAlign.end,
               style: GoogleFonts.tajawal(
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
@@ -58,11 +61,14 @@ class NewOrderCard extends StatelessWidget {
           ),
           SpacerWidget.spacerWidget(spaceHeight: 3.hm(context)),
           Container(
-            alignment:
-            Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: Get.locale.toString() == "en"
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
             child: Text(
-              number.tr,
-              textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
+              order.deliveryLocation?.phone ?? 'N/A'.tr,
+              textAlign: Get.locale.toString() == "en"
+                  ? TextAlign.start
+                  : TextAlign.end,
               style: GoogleFonts.tajawal(
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
@@ -84,7 +90,7 @@ class NewOrderCard extends StatelessWidget {
                   ),
                   child: TextButton(
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                    onPressed: () => Get.back(),
+                    onPressed: () => controller.acceptOrder(order.id!),
                     child: Center(
                       child: Text(
                         "Accept".tr,
@@ -111,7 +117,7 @@ class NewOrderCard extends StatelessWidget {
                   ),
                   child: TextButton(
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                    onPressed: () => Get.back(),
+                    onPressed: () => controller.rejectOrder(order.id!),
                     child: Center(
                       child: Text(
                         "Reject".tr,

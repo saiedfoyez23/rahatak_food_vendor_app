@@ -104,7 +104,7 @@ class DeliveryLocation {
 
   final Location? location;
   final String? title;
-  final String? governorate;
+  final List<String> governorate;
   final String? state;
   final String? city;
   final String? phone;
@@ -114,7 +114,7 @@ class DeliveryLocation {
     return DeliveryLocation(
       location: json["location"] == null ? null : Location.fromJson(json["location"]),
       title: json["title"],
-      governorate: json["governorate"],
+      governorate: json["governorate"] == null ? [] : List<String>.from(json["governorate"]!.map((x) => x)),
       state: json["state"],
       city: json["city"],
       phone: json["phone"],

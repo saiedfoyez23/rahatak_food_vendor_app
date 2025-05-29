@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../controller/order_controller.dart';
 import '../utils/utils.dart';
 
 class OrderHeader extends StatelessWidget {
   OrderHeader({super.key});
 
-  // Use Get.find to access the already instantiated controller
   final OrderController orderController = Get.find<OrderController>();
 
   @override
@@ -143,10 +141,12 @@ class _OrderTypeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height:
-      MediaQuery.sizeOf(context).height > 1000 ? 42.ht(context) : 42.hm(context),
-      width:
-      MediaQuery.sizeOf(context).width > 500 ? 150.wt(context) : 150.wm(context),
+      height: MediaQuery.sizeOf(context).height > 1000
+          ? 42.ht(context)
+          : 42.hm(context),
+      width: MediaQuery.sizeOf(context).width > 500
+          ? 150.wt(context)
+          : 150.wm(context),
       decoration: const BoxDecoration(color: Colors.transparent),
       child: TextButton(
         style: TextButton.styleFrom(padding: EdgeInsets.zero),
