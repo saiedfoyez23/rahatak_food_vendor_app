@@ -661,7 +661,7 @@ class HomeScreenWidget extends GetxController {
                               child: FittedBox(
                                 fit: BoxFit.fill,
                                 child: Image.network(
-                                  foodDetails[index].images[0],
+                                  foodDetails[index].images.isEmpty? "https://cdn-icons-png.flaticon.com/256/2748/2748558.png" : foodDetails[index].images[0],
                                   fit: BoxFit.fill,
                                   alignment: Alignment.center,
                                 ),

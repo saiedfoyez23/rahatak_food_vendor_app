@@ -1029,47 +1029,7 @@ class ProfileScreenWidget extends GetxController {
 
                                                     ),
                                                   ),
-
-                                                  SpacerWidget.spacerWidget(spaceHeight: 24.hm(context)),
-
-
-                                                  Container(
-                                                    height: 25.hm(context),
-                                                    width: 390.wm(context),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.transparent,
-                                                    ),
-                                                    child: TextButton(
-                                                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                                      onPressed: null,
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(Icons.add,size: 20.sm(context),color: ColorUtils.blue192,),
-                                                          SpacerWidget.spacerWidget(spaceWidth: 12.wm(context)),
-                                                          Expanded(
-                                                            child: Container(
-                                                              alignment: Get.locale.toString() == "en" ? Alignment.centerLeft : Alignment.centerRight,
-                                                              child: Text(
-                                                                "Add a new work hour".tr,
-                                                                textAlign: Get.locale.toString() == "en" ? TextAlign.start : TextAlign.end,
-                                                                style: GoogleFonts.tajawal(
-                                                                  fontWeight: FontWeight.w700,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  fontSize: 16.spm(context),
-                                                                  color: ColorUtils.black33,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-
-
                                                   SpacerWidget.spacerWidget(spaceHeight: 20.hm(context),),
-
-
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
