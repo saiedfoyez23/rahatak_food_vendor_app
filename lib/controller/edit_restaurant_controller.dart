@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:rahatak_food_vendor_app/controller/profile_controller.dart';
+import 'package:rahatak_food_vendor_app/controller/profile_data_controller.dart';
 import 'package:rahatak_food_vendor_app/data/api.dart';
 import 'package:rahatak_food_vendor_app/data/base_client.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
@@ -12,7 +12,7 @@ import 'package:rahatak_food_vendor_app/widget/custom_snackbar.dart';
 
 class EditRestaurantController extends GetxController {
 
-  final ProfileController profileController = Get.put(ProfileController());
+  final ProfileDataController profileController = Get.put(ProfileDataController());
 
   final restaurantNameController = TextEditingController().obs;
   final phoneNumberController = TextEditingController().obs;

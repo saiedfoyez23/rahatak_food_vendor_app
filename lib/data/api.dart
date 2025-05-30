@@ -24,6 +24,7 @@ class Api {
   static  allProduct({required String storeID}) =>  "$baseUrl/products?store=$storeID";
   static  productApi({required String productId}) =>  "$baseUrl/products/$productId";
   static  orderStatue({required String orderId}) =>  "$baseUrl/orders/$orderId";
+  static  updateStore({required String storeID}) =>  "$baseUrl/stores/$storeID";
 
 
 

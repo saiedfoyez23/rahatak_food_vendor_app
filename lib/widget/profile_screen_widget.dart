@@ -9,7 +9,7 @@ import 'package:rahatak_food_vendor_app/utils/helper/local_store.dart';
 import 'package:rahatak_food_vendor_app/utils/utils.dart';
 
 import '../controller/category_controller.dart';
-import '../controller/profile_controller.dart';
+import '../controller/profile_data_controller.dart';
 import '../model/profile_model.dart';
 import '../screen/basic_information_screen.dart';
 import '../screen/change_password.dart';
@@ -49,7 +49,7 @@ class ProfileScreenWidget extends GetxController {
   Rx<TextEditingController> workingHoursController = TextEditingController().obs;
 
 
-  final ProfileController profileController = Get.put(ProfileController());
+  final ProfileDataController profileController = Get.put(ProfileDataController());
   final CategoryController categoryController = Get.put(CategoryController());
 
   void savePassword() {

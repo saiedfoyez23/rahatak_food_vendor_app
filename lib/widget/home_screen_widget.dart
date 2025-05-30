@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rahatak_food_vendor_app/controller/product_controller.dart';
-import 'package:rahatak_food_vendor_app/controller/profile_controller.dart';
+import 'package:rahatak_food_vendor_app/controller/profile_data_controller.dart';
 import 'package:rahatak_food_vendor_app/utils/app_color/app_colors.dart';
 import 'package:rahatak_food_vendor_app/utils/utils.dart';
 import 'package:rahatak_food_vendor_app/widget/image_upload_screen.dart';
 
+import '../controller/category_controller.dart';
 import '../screen/screen.dart';
 import '../utils/app_text_style/styles.dart';
 
 class HomeScreenWidget extends GetxController {
 
 
-  final ProfileController profileController = Get.put(ProfileController());
+  final ProfileDataController profileController = Get.put(ProfileDataController());
   final ProductController productController = Get.put(ProductController());
+
 
 
   Widget homeScreenWidget({required BuildContext context}) {

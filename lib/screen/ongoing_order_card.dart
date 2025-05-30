@@ -34,7 +34,7 @@ class OngoingOrderCard extends StatelessWidget {
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
                 child: Text(
-                  'Order #${order.orderId}'.tr,
+                  'Order ${order.orderId}'.tr,
                   textAlign: Get.locale.toString() == "en"
                       ? TextAlign.start
                       : TextAlign.end,

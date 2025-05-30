@@ -52,14 +52,13 @@ class ProductData {
     required this.ratings,
     required this.createdAt,
     required this.updatedAt,
-    required this.v,
   });
 
   final String? id;
   final String? name;
   final List<String> images;
   final String? category;
-  final Store? store;
+  final String? store;
   final String? description;
   final int? discount;
   final List<Variation> variations;
@@ -68,7 +67,6 @@ class ProductData {
   final int? ratings;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? v;
 
   factory ProductData.fromJson(Map<String, dynamic> json){
     return ProductData(
@@ -76,7 +74,7 @@ class ProductData {
       name: json["name"],
       images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
       category: json["category"],
-      store: json["store"] == null ? null : Store.fromJson(json["store"]),
+      store: json["store"],
       description: json["description"],
       discount: json["discount"],
       variations: json["variations"] == null ? [] : List<Variation>.from(json["variations"]!.map((x) => Variation.fromJson(x))),
@@ -85,70 +83,6 @@ class ProductData {
       ratings: json["ratings"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      v: json["__v"],
-    );
-  }
-
-}
-
-class Store {
-  Store({
-    required this.id,
-    required this.locations,
-  });
-
-  final String? id;
-  final List<LocationElement> locations;
-
-  factory Store.fromJson(Map<String, dynamic> json){
-    return Store(
-      id: json["_id"],
-      locations: json["locations"] == null ? [] : List<LocationElement>.from(json["locations"]!.map((x) => LocationElement.fromJson(x))),
-    );
-  }
-
-}
-
-class LocationElement {
-  LocationElement({
-    required this.location,
-    required this.governorate,
-    required this.state,
-    required this.locationLink,
-    required this.id,
-  });
-
-  final LocationLocation? location;
-  final String? governorate;
-  final String? state;
-  final String? locationLink;
-  final String? id;
-
-  factory LocationElement.fromJson(Map<String, dynamic> json){
-    return LocationElement(
-      location: json["location"] == null ? null : LocationLocation.fromJson(json["location"]),
-      governorate: json["governorate"],
-      state: json["state"],
-      locationLink: json["location_link"],
-      id: json["_id"],
-    );
-  }
-
-}
-
-class LocationLocation {
-  LocationLocation({
-    required this.type,
-    required this.coordinates,
-  });
-
-  final String? type;
-  final List<double> coordinates;
-
-  factory LocationLocation.fromJson(Map<String, dynamic> json){
-    return LocationLocation(
-      type: json["type"],
-      coordinates: json["coordinates"] == null ? [] : List<double>.from(json["coordinates"]!.map((x) => x)),
     );
   }
 
