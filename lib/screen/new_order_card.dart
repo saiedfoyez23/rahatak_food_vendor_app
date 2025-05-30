@@ -47,7 +47,7 @@ class NewOrderCard extends StatelessWidget {
                 ? Alignment.centerLeft
                 : Alignment.centerRight,
             child: Text(
-              order.customer ?? 'Unknown'.tr,
+              order.customer?.name ?? 'Unknown'.tr,
               textAlign: Get.locale.toString() == "en"
                   ? TextAlign.start
                   : TextAlign.end,

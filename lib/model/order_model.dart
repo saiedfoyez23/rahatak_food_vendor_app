@@ -56,7 +56,7 @@ class OrderData {
   });
 
   final String? id;
-  final String? customer;
+  final Customer? customer;
   final String? store;
   final String? orderId;
   final String? paymentMethod;
@@ -73,7 +73,7 @@ class OrderData {
   factory OrderData.fromJson(Map<String, dynamic> json){
     return OrderData(
       id: json["_id"],
-      customer: json["customer"],
+      customer: json["customer"] == null ? null : Customer.fromJson(json["customer"]),
       store: json["store"],
       orderId: json["order_id"],
       paymentMethod: json["payment_method"],
@@ -86,6 +86,27 @@ class OrderData {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       v: json["__v"],
+    );
+  }
+
+}
+
+class Customer {
+  Customer({
+    required this.id,
+    required this.contact,
+    required this.name,
+  });
+
+  final String? id;
+  final String? contact;
+  final String? name;
+
+  factory Customer.fromJson(Map<String, dynamic> json){
+    return Customer(
+      id: json["_id"],
+      contact: json["contact"],
+      name: json["name"],
     );
   }
 
