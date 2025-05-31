@@ -77,8 +77,8 @@ class HomeScreenWidget extends GetxController {
                               child: TextButton(
                                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                                 onPressed: () {
-                                 // Get.to(() => ImageUploadPage());
-                                  Get.off(()=>NotificationScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
+                                  Get.to(() => ImageUploadPage());
+                                //  Get.off(()=>NotificationScreen(),duration: Duration(milliseconds: 300),transition: Transition.fadeIn,preventDuplicates: false);
                                 },
                                 child: FittedBox(
                                   fit: BoxFit.cover,
@@ -427,187 +427,187 @@ class HomeScreenWidget extends GetxController {
                         ),
 
 
-                        Container(
-                          height: 24.hm(context),
-                          width: 24.wm(context),
-                          decoration: BoxDecoration(
-                              color: Colors.transparent
-                          ),
-                          child: TextButton(
-                            style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {
-                              showAdaptiveDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 460.tpmm(context),
-                                        bottom: 124.tpmm(context),
-                                        left: Get.locale.toString() == "en" ? 277.lpmm(context) : 16.rpmm(context),
-                                        right: Get.locale.toString() == "en" ? 16.rpmm(context) : 277.lpmm(context)
-                                    ),
-                                    child: Container(
-                                      height: 88.hm(context),
-                                      width: 150.wm(context),
-                                      decoration: BoxDecoration(
-                                        color: ColorUtils.white255,
-                                        borderRadius: BorderRadius.circular(10.rm(context)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 4,
-                                            spreadRadius: 0,
-                                            color: ColorUtils.black05,
-                                            offset: Offset(0, 0),
-                                          )
-                                        ],
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-
-                                          Container(
-                                            height: 42.hm(context),
-                                            width: 150.wm(context),
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                            ),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                              onPressed: () async {
-                                                Get.back();
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  "Burger".tr,
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.tajawal(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16.spm(context),
-                                                    color: ColorUtils.black33,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 42.hm(context),
-                                            width: 150.wm(context),
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                            ),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                              onPressed: () async {
-                                                Get.back();
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  "Pasta".tr,
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.tajawal(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16.spm(context),
-                                                    color: ColorUtils.black33,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 42.hm(context),
-                                            width: 150.wm(context),
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                            ),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                              onPressed: () async {
-                                                Get.back();
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  "Shawarma".tr,
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.tajawal(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16.spm(context),
-                                                    color: ColorUtils.black33,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 42.hm(context),
-                                            width: 150.wm(context),
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                            ),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                              onPressed: () async {
-                                                Get.back();
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  "Fries".tr,
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.tajawal(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16.spm(context),
-                                                    color: ColorUtils.black33,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 42.hm(context),
-                                            width: 150.wm(context),
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                            ),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                                              onPressed: () async {
-                                                Get.back();
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  "Drinks".tr,
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.tajawal(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16.spm(context),
-                                                    color: ColorUtils.black33,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: FittedBox(
-                              fit: BoxFit.cover,
-                              child: Image.asset(
-                                ImagePathUtils.listShowImagePath,
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   height: 24.hm(context),
+                        //   width: 24.wm(context),
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.transparent
+                        //   ),
+                        //   child: TextButton(
+                        //     style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        //     onPressed: () {
+                        //       showAdaptiveDialog(
+                        //         context: context,
+                        //         builder: (context) {
+                        //           return Padding(
+                        //             padding: EdgeInsets.only(
+                        //                 top: 460.tpmm(context),
+                        //                 bottom: 124.tpmm(context),
+                        //                 left: Get.locale.toString() == "en" ? 277.lpmm(context) : 16.rpmm(context),
+                        //                 right: Get.locale.toString() == "en" ? 16.rpmm(context) : 277.lpmm(context)
+                        //             ),
+                        //             child: Container(
+                        //               height: 88.hm(context),
+                        //               width: 150.wm(context),
+                        //               decoration: BoxDecoration(
+                        //                 color: ColorUtils.white255,
+                        //                 borderRadius: BorderRadius.circular(10.rm(context)),
+                        //                 boxShadow: [
+                        //                   BoxShadow(
+                        //                     blurRadius: 4,
+                        //                     spreadRadius: 0,
+                        //                     color: ColorUtils.black05,
+                        //                     offset: Offset(0, 0),
+                        //                   )
+                        //                 ],
+                        //               ),
+                        //               child: Column(
+                        //                 mainAxisAlignment: MainAxisAlignment.center,
+                        //                 children: [
+                        //
+                        //                   Container(
+                        //                     height: 42.hm(context),
+                        //                     width: 150.wm(context),
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.transparent,
+                        //                     ),
+                        //                     child: TextButton(
+                        //                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        //                       onPressed: () async {
+                        //                         Get.back();
+                        //                       },
+                        //                       child: Center(
+                        //                         child: Text(
+                        //                           "Burger".tr,
+                        //                           textAlign: TextAlign.center,
+                        //                           style: GoogleFonts.tajawal(
+                        //                             fontWeight: FontWeight.w500,
+                        //                             fontStyle: FontStyle.normal,
+                        //                             fontSize: 16.spm(context),
+                        //                             color: ColorUtils.black33,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   Container(
+                        //                     height: 42.hm(context),
+                        //                     width: 150.wm(context),
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.transparent,
+                        //                     ),
+                        //                     child: TextButton(
+                        //                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        //                       onPressed: () async {
+                        //                         Get.back();
+                        //                       },
+                        //                       child: Center(
+                        //                         child: Text(
+                        //                           "Pasta".tr,
+                        //                           textAlign: TextAlign.center,
+                        //                           style: GoogleFonts.tajawal(
+                        //                             fontWeight: FontWeight.w500,
+                        //                             fontStyle: FontStyle.normal,
+                        //                             fontSize: 16.spm(context),
+                        //                             color: ColorUtils.black33,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   Container(
+                        //                     height: 42.hm(context),
+                        //                     width: 150.wm(context),
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.transparent,
+                        //                     ),
+                        //                     child: TextButton(
+                        //                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        //                       onPressed: () async {
+                        //                         Get.back();
+                        //                       },
+                        //                       child: Center(
+                        //                         child: Text(
+                        //                           "Shawarma".tr,
+                        //                           textAlign: TextAlign.center,
+                        //                           style: GoogleFonts.tajawal(
+                        //                             fontWeight: FontWeight.w500,
+                        //                             fontStyle: FontStyle.normal,
+                        //                             fontSize: 16.spm(context),
+                        //                             color: ColorUtils.black33,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   Container(
+                        //                     height: 42.hm(context),
+                        //                     width: 150.wm(context),
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.transparent,
+                        //                     ),
+                        //                     child: TextButton(
+                        //                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        //                       onPressed: () async {
+                        //                         Get.back();
+                        //                       },
+                        //                       child: Center(
+                        //                         child: Text(
+                        //                           "Fries".tr,
+                        //                           textAlign: TextAlign.center,
+                        //                           style: GoogleFonts.tajawal(
+                        //                             fontWeight: FontWeight.w500,
+                        //                             fontStyle: FontStyle.normal,
+                        //                             fontSize: 16.spm(context),
+                        //                             color: ColorUtils.black33,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   Container(
+                        //                     height: 42.hm(context),
+                        //                     width: 150.wm(context),
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.transparent,
+                        //                     ),
+                        //                     child: TextButton(
+                        //                       style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        //                       onPressed: () async {
+                        //                         Get.back();
+                        //                       },
+                        //                       child: Center(
+                        //                         child: Text(
+                        //                           "Drinks".tr,
+                        //                           textAlign: TextAlign.center,
+                        //                           style: GoogleFonts.tajawal(
+                        //                             fontWeight: FontWeight.w500,
+                        //                             fontStyle: FontStyle.normal,
+                        //                             fontSize: 16.spm(context),
+                        //                             color: ColorUtils.black33,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           );
+                        //         },
+                        //       );
+                        //     },
+                        //     child: FittedBox(
+                        //       fit: BoxFit.cover,
+                        //       child: Image.asset(
+                        //         ImagePathUtils.listShowImagePath,
+                        //         fit: BoxFit.cover,
+                        //         alignment: Alignment.center,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
 
 
                       ],

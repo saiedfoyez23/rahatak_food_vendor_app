@@ -59,13 +59,13 @@ class ImageUploadController extends GetxController {
       // Prepare the multipart request
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://192.168.10.43:5010/api/v1/products/image'),
+        Uri.parse('http://192.168.10.43:5010/api/v1/uploader/multiple'),
       );
 
       // Add the image file to the request with PNG MIME type
       request.files.add(
         await http.MultipartFile.fromPath(
-          'image', // Field name for the image
+          'images', // Field name for the image
           selectedImage.value!.path!,
           filename: selectedImage.value!.name,
         ),
